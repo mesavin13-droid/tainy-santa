@@ -47,14 +47,14 @@ export default function Home() {
       <div className="intro-stars" aria-hidden="true">{Array.from({length: 24}, (_, i) => <i key={i} style={{'--i': i} as React.CSSProperties}>✦</i>)}</div>
       {introStage === 'locked' ? <>
         <div className="intro-status"><LockKeyhole size={15}/> ТАЙНЫЙ САНТА <span>2027</span></div>
-        <div className="lock-content">
-          <div className="lock-date">Скоро наступит Новый год</div>
-          <div className="lock-clock">23:59</div>
-          <div className="lock-date lock-date-bottom">31 декабря · время чудес</div>
+        <div className="lock-content welcome-content">
+          <div className="lock-date">Скоро Новый год</div>
+          <h1 className="welcome-title">Мы хотим сделать<br/><em>маленькое чудо</em></h1>
+          <p className="welcome-message">Давайте подарим друг другу немного волшебства! Тайный Санта — это сюрпризы, тёплые пожелания и радость от того, что кто-то готовит подарок именно для тебя.</p>
           <div className="lock-gift" aria-hidden="true"><span>🎁</span><b>✦</b></div>
         </div>
         <div className="swipe-area">
-          <button className="newyear-enter lock-enter" onClick={unlock}>Войти в игру 🎅🎁</button>
+          <button className="newyear-enter lock-enter" onClick={unlock}>Дальше <ArrowRight size={18}/></button>
         </div>
       </> : <>
         <div className="intro-status"><Sparkles size={15}/> С НОВЫМ ГОДОМ <span>2027</span></div>
@@ -63,8 +63,9 @@ export default function Home() {
           <div className="newyear-number">2027</div>
           <h1>С наступающим<br/><em>Новым годом!</em></h1>
           <p className="newyear-message">Пусть в новом году будет больше поводов улыбаться, тёплых встреч, неожиданных подарков и маленьких чудес.</p>
+          <p className="newyear-thanks">Спасибо, что играете с нами ❤️</p>
           <div className="wish-chips"><span>✨ Счастья</span><span>🎁 Чудес</span><span>❤️ Тепла</span></div>
-          <button className="newyear-enter" onClick={finishIntro}>Войти в Тайного Санту <ArrowRight size={18}/></button>
+          <button className="newyear-enter" onClick={finishIntro}>Войти в игру 🎅🎁</button>
         </div>
         <div className="newyear-bottom">Пусть желания сбываются</div>
         <div className="confetti" aria-hidden="true">{Array.from({length: 38}, (_, i) => <i key={i} style={{'--i': i} as React.CSSProperties}/>)}</div>
