@@ -499,3 +499,25 @@ footer .brand-mark{background:#ffffff08;border-color:#b98759;color:#f0ce8d}
 .welcome-message{max-width:390px;font-size:14px;line-height:1.75;color:#f4d9c9;margin:0 auto;}
 .lock-enter{width:min(360px,100%);cursor:pointer;touch-action:manipulation;}
 .newyear-thanks{font-size:14px;font-weight:700;color:#ffe3a6;margin:-8px 0 22px;}
+
+/* Clickable holiday gift */
+.gift-open-trigger{position:relative;z-index:4;display:flex;align-items:center;justify-content:center;gap:4px;margin-top:18px;padding:0 8px 4px;border:0;background:transparent;color:#f7d89a;cursor:pointer;touch-action:manipulation;appearance:none;-webkit-tap-highlight-color:transparent}
+.gift-open-trigger:focus-visible{outline:2px solid #ffe6ae;outline-offset:8px;border-radius:18px}
+.gift-open-trigger:disabled{cursor:default}
+.gift-open-label{font-size:15px;font-weight:700;letter-spacing:.04em;text-shadow:0 2px 12px #17070680;transform:translateY(-15px)}
+.gift-dotted-arrow{width:78px;height:48px;overflow:visible;align-self:flex-start;margin:0 -9px 0 -2px;color:#f3cd82;filter:drop-shadow(0 2px 5px #1a070740);animation:arrow-point 1.7s ease-in-out infinite}
+.gift-open-trigger .lock-gift{margin:0 0 0 -2px;flex:0 0 140px;transition:filter .3s,transform .3s}
+.gift-open-trigger:hover .lock-gift{filter:drop-shadow(0 22px 25px #16060670);transform:translateY(-4px) scale(1.025)}
+.gift-open-trigger.is-opening .lock-gift{animation:gift-opening .95s cubic-bezier(.2,.75,.25,1) forwards}
+.gift-open-trigger.is-opening .lock-gift span{animation:gift-lid-magic .95s ease-in-out forwards}
+.gift-open-trigger.is-opening .gift-dotted-arrow{opacity:0;transition:opacity .2s}
+.gift-open-caption{position:relative;z-index:3;margin:0 0 calc(env(safe-area-inset-bottom,0px) + 23px);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#edc7ad;opacity:.9}
+.welcome-content .welcome-message{margin-bottom:0}
+.welcome-content .lock-date{font-size:14px;letter-spacing:.06em}
+.welcome-content .lock-gift{margin-top:8px}
+.newyear-thanks{font-size:14px;font-weight:700;color:#ffe3a6;margin:-8px 0 22px}
+@keyframes arrow-point{0%,100%{transform:translate(0,0) rotate(0);opacity:.75}50%{transform:translate(3px,-4px) rotate(-3deg);opacity:1}}
+@keyframes gift-opening{0%{transform:scale(1) rotate(0);filter:drop-shadow(0 20px 20px #16060650)}35%{transform:scale(1.1) rotate(-5deg)}62%{transform:scale(1.17) rotate(5deg);filter:drop-shadow(0 0 30px #ffdb92)}100%{transform:scale(.72) translateY(-20px);opacity:.15;filter:drop-shadow(0 0 42px #ffdb92)}}
+@keyframes gift-lid-magic{0%{transform:translateY(-8px) rotate(0) scale(1)}35%{transform:translateY(-22px) rotate(-15deg) scale(1.15)}65%{transform:translateY(-38px) rotate(16deg) scale(1.22)}100%{transform:translateY(-52px) rotate(24deg) scale(1.25);opacity:0}}
+@media(max-width:420px){.gift-open-trigger{gap:0;margin-top:10px}.gift-open-label{font-size:14px}.gift-dotted-arrow{width:62px;margin-left:-4px;margin-right:-12px}.gift-open-trigger .lock-gift{flex-basis:125px;transform:scale(.94);transform-origin:left center}.gift-open-caption{margin-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}}
+@media(prefers-reduced-motion:reduce){.gift-dotted-arrow{animation:none}.gift-open-trigger.is-opening .lock-gift,.gift-open-trigger.is-opening .lock-gift span{animation-duration:.3s}}
