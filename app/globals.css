@@ -359,3 +359,135 @@ footer .brand-mark{background:#ffffff08;border-color:#b98759;color:#f0ce8d}
 @media(prefers-reduced-motion:reduce){
   .step-card,.button,.game-button{transition:none}
 }
+
+
+/* Swipe-to-unlock holiday intro and 2027 greeting */
+.santa-intro{
+  position:fixed;inset:0;z-index:99999;min-height:100vh;min-height:100dvh;
+  overflow:hidden;isolation:isolate;color:#fff4e8;
+  font-family:'DM Sans',sans-serif;display:flex;flex-direction:column;align-items:center;
+  background:
+    radial-gradient(ellipse at 50% 37%,#b53b31 0%,#76221f 35%,transparent 67%),
+    radial-gradient(ellipse at 10% 100%,#24533a 0%,transparent 42%),
+    linear-gradient(145deg,#241412 0%,#4b1717 53%,#172b20 100%);
+  animation:intro-appear .55s ease-out both;
+}
+.santa-intro:before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.17;background-image:radial-gradient(#ffe3b6 1px,transparent 1px),radial-gradient(#ffe3b6 1px,transparent 1px);background-size:53px 53px,91px 91px;background-position:0 0,24px 31px}
+.intro-status{position:relative;z-index:3;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:calc(env(safe-area-inset-top,0px) + 21px) 20px 12px;font-size:10px;letter-spacing:.22em;font-weight:700;color:#f8dba8}
+.intro-status span{border:1px solid #f8dba85c;border-radius:99px;padding:5px 9px;font-size:9px;letter-spacing:.13em}
+.intro-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.intro-stars i{position:absolute;font-style:normal;color:#ffe1a0;opacity:.45;text-shadow:0 0 12px #ffca6c;animation:star-twinkle 3s ease-in-out infinite alternate}
+.lock-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;margin:auto 0 0;padding:0 20px;width:100%}
+.lock-date{font-size:clamp(13px,3.5vw,16px);color:#ffe1c9;letter-spacing:.025em}
+.lock-clock{font-size:clamp(94px,24vw,152px);line-height:.98;letter-spacing:-.085em;font-weight:500;color:#fff5e8;text-shadow:0 8px 38px #250a0a66;margin:11px 0 14px;font-variant-numeric:tabular-nums}
+.lock-date-bottom{font-size:12px;color:#edc7ad}
+.lock-gift{position:relative;margin-top:25px;width:140px;height:132px;display:grid;place-items:center;filter:drop-shadow(0 20px 20px #16060650);animation:gift-float 3.8s ease-in-out infinite}
+.lock-gift:before{content:'';position:absolute;width:116px;height:82px;bottom:8px;border-radius:8px;background:linear-gradient(120deg,#f26a4f,#bc302d 65%,#812326);border:1px solid #ffdb9c66}
+.lock-gift:after{content:'';position:absolute;bottom:8px;width:20px;height:82px;background:linear-gradient(90deg,#c59a4c,#ffe6a2,#bd8d42)}
+.lock-gift span{position:relative;z-index:2;font-size:65px;filter:drop-shadow(0 4px 5px #3d0b0a40);transform:translateY(-8px)}
+.lock-gift b{position:absolute;right:4px;top:4px;color:#ffdb92;font-size:25px}
+.swipe-area{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:10px;width:min(340px,calc(100% - 48px));margin:12px 0 calc(env(safe-area-inset-bottom,0px) + 25px);padding:10px 0 0;touch-action:none;cursor:pointer;user-select:none;outline:none}
+.swipe-hint{font-size:12px;color:#f6ddca;letter-spacing:.015em}
+.swipe-chevron{height:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;animation:chevron-nudge 1.3s ease-in-out infinite}
+.swipe-chevron span{display:block;width:9px;height:9px;border-left:1.5px solid #f5d69d;border-top:1.5px solid #f5d69d;transform:rotate(45deg);margin-bottom:-4px}
+.swipe-track{width:100%;height:56px;border:1px solid #f6d9a45c;border-radius:99px;background:#160d0c52;box-shadow:inset 0 2px 9px #13070640,0 8px 30px #15070626;display:flex;align-items:center;padding:5px;position:relative}
+.swipe-track:after{content:'СВАЙП';position:absolute;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.28em;color:#ffead4a6;pointer-events:none}
+.swipe-thumb{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ffe8b2,#d6a65e);color:#4b201b;box-shadow:0 4px 15px #17070650;animation:thumb-nudge 1.8s ease-in-out infinite}
+.newyear-content{position:relative;z-index:3;width:min(520px,100%);margin:auto 0;padding:26px 26px 20px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.newyear-kicker{font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:#ffdda2}
+.newyear-number{font-size:clamp(96px,24vw,166px);font-weight:700;letter-spacing:-.09em;line-height:.98;margin:15px 0 9px;color:#ffe3a6;text-shadow:0 0 45px #f9c16a45,0 10px 35px #19080855;animation:number-reveal .9s cubic-bezier(.18,.8,.25,1.1) both}
+.newyear-content h1{font-family:'DM Sans',sans-serif;font-size:clamp(30px,7.6vw,43px);line-height:1.08;letter-spacing:-.055em;font-weight:700;color:#fff5e9;margin:13px 0 16px}
+.newyear-content h1 em{font-style:normal;color:#ffcf8d}
+.newyear-message{font-size:14px;line-height:1.8;color:#f4d9c9;max-width:400px;margin-bottom:22px}
+.wish-chips{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin:0 0 28px}
+.wish-chips span{padding:9px 12px;border:1px solid #f7d9a84d;border-radius:99px;background:#fff7e90d;font-size:12px;color:#ffedda}
+.newyear-enter{border:0;border-radius:99px;min-height:54px;padding:0 24px;display:flex;align-items:center;justify-content:center;gap:12px;background:linear-gradient(135deg,#ffe6ae,#d7a75d);color:#49201a;font-size:14px;font-weight:700;box-shadow:0 10px 30px #18080755;transition:transform .2s,filter .2s;max-width:100%}
+.newyear-enter:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.newyear-bottom{position:relative;z-index:3;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 22px);font-size:10px;letter-spacing:.2em;color:#eac7ad;text-align:center}
+.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.confetti i{position:absolute;top:-22px;display:block;border-radius:2px;background:#f5d58c;opacity:.8;animation:confetti-fall 7s linear infinite}
+.confetti i:nth-child(3n){background:#f36f52}.confetti i:nth-child(3n + 1){background:#f9ead3}.confetti i:nth-child(4n){border-radius:50%;background:#75a978}
+@keyframes intro-appear{from{opacity:0}to{opacity:1}}
+@keyframes star-twinkle{from{opacity:.14;transform:scale(.7) rotate(0deg)}to{opacity:.8;transform:scale(1.12) rotate(24deg)}}
+@keyframes gift-float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+@keyframes chevron-nudge{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(-5px);opacity:1}}
+@keyframes thumb-nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes number-reveal{from{opacity:0;transform:translateY(22px) scale(.86);filter:blur(9px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes confetti-fall{0%{transform:translate3d(0,-4vh,0) rotate(0deg);opacity:0}10%{opacity:.9}90%{opacity:.8}100%{transform:translate3d(22px,110vh,0) rotate(650deg);opacity:0}}
+.intro-stars i:nth-child(1){left:13%;top:12%;font-size:7px;animation-delay:0s}
+.intro-stars i:nth-child(2){left:50%;top:65%;font-size:10px;animation-delay:-0.7s}
+.intro-stars i:nth-child(3){left:87%;top:42%;font-size:13px;animation-delay:-1.4s}
+.intro-stars i:nth-child(4){left:28%;top:19%;font-size:16px;animation-delay:-2.0999999999999996s}
+.intro-stars i:nth-child(5){left:65%;top:72%;font-size:7px;animation-delay:-2.8s}
+.intro-stars i:nth-child(6){left:6%;top:49%;font-size:10px;animation-delay:-3.5s}
+.intro-stars i:nth-child(7){left:43%;top:26%;font-size:13px;animation-delay:-4.199999999999999s}
+.intro-stars i:nth-child(8){left:80%;top:79%;font-size:16px;animation-delay:-4.8999999999999995s}
+.intro-stars i:nth-child(9){left:21%;top:56%;font-size:7px;animation-delay:0s}
+.intro-stars i:nth-child(10){left:58%;top:33%;font-size:10px;animation-delay:-0.7s}
+.intro-stars i:nth-child(11){left:95%;top:10%;font-size:13px;animation-delay:-1.4s}
+.intro-stars i:nth-child(12){left:36%;top:63%;font-size:16px;animation-delay:-2.0999999999999996s}
+.intro-stars i:nth-child(13){left:73%;top:40%;font-size:7px;animation-delay:-2.8s}
+.intro-stars i:nth-child(14){left:14%;top:17%;font-size:10px;animation-delay:-3.5s}
+.intro-stars i:nth-child(15){left:51%;top:70%;font-size:13px;animation-delay:-4.199999999999999s}
+.intro-stars i:nth-child(16){left:88%;top:47%;font-size:16px;animation-delay:-4.8999999999999995s}
+.intro-stars i:nth-child(17){left:29%;top:24%;font-size:7px;animation-delay:0s}
+.intro-stars i:nth-child(18){left:66%;top:77%;font-size:10px;animation-delay:-0.7s}
+.intro-stars i:nth-child(19){left:7%;top:54%;font-size:13px;animation-delay:-1.4s}
+.intro-stars i:nth-child(20){left:44%;top:31%;font-size:16px;animation-delay:-2.0999999999999996s}
+.intro-stars i:nth-child(21){left:81%;top:8%;font-size:7px;animation-delay:-2.8s}
+.intro-stars i:nth-child(22){left:22%;top:61%;font-size:10px;animation-delay:-3.5s}
+.intro-stars i:nth-child(23){left:59%;top:38%;font-size:13px;animation-delay:-4.199999999999999s}
+.intro-stars i:nth-child(24){left:96%;top:15%;font-size:16px;animation-delay:-4.8999999999999995s}
+.confetti i:nth-child(1){left:6%;animation-delay:0s;animation-duration:5s;width:5px;height:12px;transform:rotate(0deg)}
+.confetti i:nth-child(2){left:35%;animation-delay:-2.3333333333333335s;animation-duration:6.1s;width:3px;height:8px;transform:rotate(47deg)}
+.confetti i:nth-child(3){left:64%;animation-delay:-4.666666666666667s;animation-duration:7.2s;width:3px;height:8px;transform:rotate(94deg)}
+.confetti i:nth-child(4){left:93%;animation-delay:-7s;animation-duration:8.3s;width:5px;height:12px;transform:rotate(141deg)}
+.confetti i:nth-child(5){left:24%;animation-delay:-1.6666666666666667s;animation-duration:9.4s;width:3px;height:8px;transform:rotate(8deg)}
+.confetti i:nth-child(6){left:53%;animation-delay:-4s;animation-duration:10.5s;width:3px;height:8px;transform:rotate(55deg)}
+.confetti i:nth-child(7){left:82%;animation-delay:-6.333333333333333s;animation-duration:5s;width:5px;height:12px;transform:rotate(102deg)}
+.confetti i:nth-child(8){left:13%;animation-delay:-1s;animation-duration:6.1s;width:3px;height:8px;transform:rotate(149deg)}
+.confetti i:nth-child(9){left:42%;animation-delay:-3.3333333333333335s;animation-duration:7.2s;width:3px;height:8px;transform:rotate(16deg)}
+.confetti i:nth-child(10){left:71%;animation-delay:-5.666666666666667s;animation-duration:8.3s;width:5px;height:12px;transform:rotate(63deg)}
+.confetti i:nth-child(11){left:2%;animation-delay:-0.3333333333333333s;animation-duration:9.4s;width:3px;height:8px;transform:rotate(110deg)}
+.confetti i:nth-child(12){left:31%;animation-delay:-2.6666666666666665s;animation-duration:10.5s;width:3px;height:8px;transform:rotate(157deg)}
+.confetti i:nth-child(13){left:60%;animation-delay:-5s;animation-duration:5s;width:5px;height:12px;transform:rotate(24deg)}
+.confetti i:nth-child(14){left:89%;animation-delay:-7.333333333333333s;animation-duration:6.1s;width:3px;height:8px;transform:rotate(71deg)}
+.confetti i:nth-child(15){left:20%;animation-delay:-2s;animation-duration:7.2s;width:3px;height:8px;transform:rotate(118deg)}
+.confetti i:nth-child(16){left:49%;animation-delay:-4.333333333333333s;animation-duration:8.3s;width:5px;height:12px;transform:rotate(165deg)}
+.confetti i:nth-child(17){left:78%;animation-delay:-6.666666666666667s;animation-duration:9.4s;width:3px;height:8px;transform:rotate(32deg)}
+.confetti i:nth-child(18){left:9%;animation-delay:-1.3333333333333333s;animation-duration:10.5s;width:3px;height:8px;transform:rotate(79deg)}
+.confetti i:nth-child(19){left:38%;animation-delay:-3.6666666666666665s;animation-duration:5s;width:5px;height:12px;transform:rotate(126deg)}
+.confetti i:nth-child(20){left:67%;animation-delay:-6s;animation-duration:6.1s;width:3px;height:8px;transform:rotate(173deg)}
+.confetti i:nth-child(21){left:96%;animation-delay:-0.6666666666666666s;animation-duration:7.2s;width:3px;height:8px;transform:rotate(40deg)}
+.confetti i:nth-child(22){left:27%;animation-delay:-3s;animation-duration:8.3s;width:5px;height:12px;transform:rotate(87deg)}
+.confetti i:nth-child(23){left:56%;animation-delay:-5.333333333333333s;animation-duration:9.4s;width:3px;height:8px;transform:rotate(134deg)}
+.confetti i:nth-child(24){left:85%;animation-delay:0s;animation-duration:10.5s;width:3px;height:8px;transform:rotate(1deg)}
+.confetti i:nth-child(25){left:16%;animation-delay:-2.3333333333333335s;animation-duration:5s;width:5px;height:12px;transform:rotate(48deg)}
+.confetti i:nth-child(26){left:45%;animation-delay:-4.666666666666667s;animation-duration:6.1s;width:3px;height:8px;transform:rotate(95deg)}
+.confetti i:nth-child(27){left:74%;animation-delay:-7s;animation-duration:7.2s;width:3px;height:8px;transform:rotate(142deg)}
+.confetti i:nth-child(28){left:5%;animation-delay:-1.6666666666666667s;animation-duration:8.3s;width:5px;height:12px;transform:rotate(9deg)}
+.confetti i:nth-child(29){left:34%;animation-delay:-4s;animation-duration:9.4s;width:3px;height:8px;transform:rotate(56deg)}
+.confetti i:nth-child(30){left:63%;animation-delay:-6.333333333333333s;animation-duration:10.5s;width:3px;height:8px;transform:rotate(103deg)}
+.confetti i:nth-child(31){left:92%;animation-delay:-1s;animation-duration:5s;width:5px;height:12px;transform:rotate(150deg)}
+.confetti i:nth-child(32){left:23%;animation-delay:-3.3333333333333335s;animation-duration:6.1s;width:3px;height:8px;transform:rotate(17deg)}
+.confetti i:nth-child(33){left:52%;animation-delay:-5.666666666666667s;animation-duration:7.2s;width:3px;height:8px;transform:rotate(64deg)}
+.confetti i:nth-child(34){left:81%;animation-delay:-0.3333333333333333s;animation-duration:8.3s;width:5px;height:12px;transform:rotate(111deg)}
+.confetti i:nth-child(35){left:12%;animation-delay:-2.6666666666666665s;animation-duration:9.4s;width:3px;height:8px;transform:rotate(158deg)}
+.confetti i:nth-child(36){left:41%;animation-delay:-5s;animation-duration:10.5s;width:3px;height:8px;transform:rotate(25deg)}
+.confetti i:nth-child(37){left:70%;animation-delay:-7.333333333333333s;animation-duration:5s;width:5px;height:12px;transform:rotate(72deg)}
+.confetti i:nth-child(38){left:1%;animation-delay:-2s;animation-duration:6.1s;width:3px;height:8px;transform:rotate(119deg)}
+@media(max-height:720px){
+ .lock-content{margin-top:10px}
+ .lock-clock{font-size:clamp(75px,19vh,120px)}
+ .lock-gift{margin-top:8px;transform:scale(.82)}
+ .swipe-area{margin-top:0;margin-bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+ .newyear-content{padding-top:12px;padding-bottom:12px}
+ .newyear-number{font-size:clamp(85px,19vh,132px);margin:8px 0}
+ .newyear-content h1{font-size:clamp(27px,6vh,37px);margin:8px 0 10px}
+ .newyear-message{font-size:12px;line-height:1.55;margin-bottom:14px}
+ .wish-chips{margin-bottom:15px}
+}
+@media(prefers-reduced-motion:reduce){
+ .intro-stars i,.lock-gift,.swipe-chevron,.swipe-thumb,.newyear-number,.confetti i{animation:none!important}
+ .santa-intro{animation:none}
+}
