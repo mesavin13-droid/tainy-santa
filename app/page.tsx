@@ -1,9 +1,9 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ArrowRight, Check, ChevronDown, Gift, LockKeyhole, Snowflake, Sparkles, Users, CalendarDays, Menu, X } from 'lucide-react';
 
 type Game = { name: string; company: string; budget: string; date: string; deadline: string; rules: string };
-const initialGame: Game = { name: 'Тайный Санта 2026', company: 'Наша компания', budget: '1500', date: '2026-12-25', deadline: '2026-12-10', rules: 'Дарим подарки в пределах бюджета. Главное — внимание и немного волшебства.' };
+const initialGame: Game = { name: 'Тайный Санта 2027', company: 'Наша компания', budget: '1500', date: '2027-12-25', deadline: '2027-12-10', rules: 'Дарим подарки в пределах бюджета. Главное — внимание и немного волшебства.' };
 
 export default function Home() {
   const [game, setGame] = useState<Game>(initialGame);
@@ -13,6 +13,10 @@ export default function Home() {
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState('');
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [introStage, setIntroStage] = useState<'locked' | 'newyear' | 'done'>('locked');
+  const swipeStartY = useRef<number | null>(null);
+  const unlock = () => setIntroStage('newyear');
+  const finishIntro = () => setIntroStage('done');
   const update = (key: keyof Game, value: string) => setGame(prev => ({ ...prev, [key]: value }));
 
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,6 +44,41 @@ export default function Home() {
   };
 
   return <main>
+    {introStage !== 'done' && <div className={introStage === 'locked' ? 'santa-intro santa-lock-screen' : 'santa-intro santa-newyear-screen'} role="dialog" aria-modal="true" aria-label={introStage === 'locked' ? 'Разблокировка Тайного Санты' : 'Поздравление с Новым годом'}>
+      <div className="intro-stars" aria-hidden="true">{Array.from({length: 24}, (_, i) => <i key={i} style={{'--i': i} as React.CSSProperties}>✦</i>)}</div>
+      {introStage === 'locked' ? <>
+        <div className="intro-status"><LockKeyhole size={15}/> ТАЙНЫЙ САНТА <span>2027</span></div>
+        <div className="lock-content">
+          <div className="lock-date">Скоро наступит Новый год</div>
+          <div className="lock-clock">23:59</div>
+          <div className="lock-date lock-date-bottom">31 декабря · время чудес</div>
+          <div className="lock-gift" aria-hidden="true"><span>🎁</span><b>✦</b></div>
+        </div>
+        <div className="swipe-area"
+          onPointerDown={e => { swipeStartY.current = e.clientY; e.currentTarget.setPointerCapture(e.pointerId); }}
+          onPointerUp={e => { if (swipeStartY.current !== null && swipeStartY.current - e.clientY > 42) unlock(); swipeStartY.current = null; }}
+          onPointerCancel={() => { swipeStartY.current = null; }}
+          onClick={unlock}
+          role="button" tabIndex={0} aria-label="Провести вверх, чтобы разблокировать"
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') unlock(); }}>
+          <div className="swipe-hint">Проведите вверх, чтобы открыть</div>
+          <div className="swipe-chevron"><span/><span/><span/></div>
+          <div className="swipe-track"><div className="swipe-thumb"><ArrowRight size={19}/></div></div>
+        </div>
+      </> : <>
+        <div className="intro-status"><Sparkles size={15}/> С НОВЫМ ГОДОМ <span>2027</span></div>
+        <div className="newyear-content">
+          <div className="newyear-kicker">Пусть сбудется всё хорошее</div>
+          <div className="newyear-number">2027</div>
+          <h1>С наступающим<br/><em>Новым годом!</em></h1>
+          <p className="newyear-message">Пусть в новом году будет больше поводов улыбаться, тёплых встреч, неожиданных подарков и маленьких чудес.</p>
+          <div className="wish-chips"><span>✨ Счастья</span><span>🎁 Чудес</span><span>❤️ Тепла</span></div>
+          <button className="newyear-enter" onClick={finishIntro}>Войти в Тайного Санту <ArrowRight size={18}/></button>
+        </div>
+        <div className="newyear-bottom">Пусть желания сбываются</div>
+        <div className="confetti" aria-hidden="true">{Array.from({length: 38}, (_, i) => <i key={i} style={{'--i': i} as React.CSSProperties}/>)}</div>
+      </>}
+    </div>}
     <header className="topbar"><a className="brand" href="#top"><span className="brand-mark"><Snowflake size={19}/></span><span>ТАЙНЫЙ САНТА</span></a><nav className={mobileMenu ? 'nav nav-open' : 'nav'}><a href="#how" onClick={() => setMobileMenu(false)}>Как это работает</a><a href="#rules" onClick={() => setMobileMenu(false)}>Правила</a><button className="button button-small button-outline" onClick={() => setShowCreate(true)}>Создать игру <ArrowRight size={15}/></button></nav><button className="mobile-toggle" onClick={() => setMobileMenu(!mobileMenu)} aria-label="Открыть меню">{mobileMenu ? <X/> : <Menu/>}</button></header>
     <section className="hero" id="top"><div className="hero-copy"><div className="eyebrow"><Sparkles size={14}/> КОРПОРАТИВНАЯ ТРАДИЦИЯ</div><h1>Подарки —<br/><em>тайна.</em> Радость —<br/>общая.</h1><p className="hero-text">Организуйте Тайного Санту в компании за несколько минут. Сотрудники подключаются по ссылке, а кому дарить — узнают только они.</p><div className="hero-actions"><button className="button button-gold" onClick={() => setShowCreate(true)}>Создать игру <ArrowRight size={17}/></button><button className="button button-ghost" onClick={() => setShowJoin(true)}>У меня есть код</button></div><div className="hero-notes"><span><Check size={15}/> Без установки приложения</span><span><LockKeyhole size={15}/> Тайные назначения</span></div></div><div className="hero-art"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="star star-a">✳</div><div className="star star-b">✦</div><div className="star star-c">·</div><div className="gift-box"><div className="gift-lid"/><div className="gift-body"><div className="gift-ribbon-v"/><div className="gift-ribbon-h"/><div className="gift-bow"><i/><i/></div></div><div className="gift-shadow"/></div><div className="art-label"><span className="pulse-dot"/> ВРЕМЯ ДАРИТЬ ЧУДО</div><div className="art-caption">Секрет уже<br/>в пути.</div></div></section>
     <section className="game-strip"><div><span className="strip-label">ПРИМЕР ИГРЫ</span><h2>{game.name}</h2><p>{game.company}</p></div><div className="strip-stat"><CalendarDays size={18}/><div><span>День обмена</span><strong>{game.date ? new Date(game.date+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}) : 'Уточняется'}</strong></div></div><div className="strip-stat"><Gift size={18}/><div><span>Бюджет подарка</span><strong>{Number(game.budget || 0).toLocaleString('ru-RU')} ₽</strong></div></div><button className="button button-dark" onClick={() => setShowJoin(true)}>Присоединиться <ArrowRight size={16}/></button></section>
