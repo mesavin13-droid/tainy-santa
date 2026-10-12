@@ -491,3 +491,11 @@ footer .brand-mark{background:#ffffff08;border-color:#b98759;color:#f0ce8d}
  .intro-stars i,.lock-gift,.swipe-chevron,.swipe-thumb,.newyear-number,.confetti i{animation:none!important}
  .santa-intro{animation:none}
 }
+
+/* Welcome step copy and thank-you on the New Year screen */
+.welcome-content{margin:auto 0;padding-top:18px;padding-bottom:12px;}
+.welcome-title{font-family:'DM Sans',sans-serif;font-size:clamp(31px,8vw,43px);line-height:1.08;letter-spacing:-.045em;font-weight:700;color:#fff5e9;margin:18px 0 15px;}
+.welcome-title em{font-style:normal;color:#ffcf8d;}
+.welcome-message{max-width:390px;font-size:14px;line-height:1.75;color:#f4d9c9;margin:0 auto;}
+.lock-enter{width:min(360px,100%);cursor:pointer;touch-action:manipulation;}
+.newyear-thanks{font-size:14px;font-weight:700;color:#ffe3a6;margin:-8px 0 22px;}
