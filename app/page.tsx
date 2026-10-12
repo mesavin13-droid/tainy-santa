@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { ArrowRight, Check, ChevronDown, Gift, LockKeyhole, Snowflake, Sparkles, Users, CalendarDays, Menu, X } from 'lucide-react';
 
 type Game = { name: string; company: string; budget: string; date: string; deadline: string; rules: string };
@@ -14,7 +14,6 @@ export default function Home() {
   const [createError, setCreateError] = useState('');
   const [mobileMenu, setMobileMenu] = useState(false);
   const [introStage, setIntroStage] = useState<'locked' | 'newyear' | 'done'>('locked');
-  const swipeStartY = useRef<number | null>(null);
   const unlock = () => setIntroStage('newyear');
   const finishIntro = () => setIntroStage('done');
   const update = (key: keyof Game, value: string) => setGame(prev => ({ ...prev, [key]: value }));
@@ -54,16 +53,8 @@ export default function Home() {
           <div className="lock-date lock-date-bottom">31 декабря · время чудес</div>
           <div className="lock-gift" aria-hidden="true"><span>🎁</span><b>✦</b></div>
         </div>
-        <div className="swipe-area"
-          onPointerDown={e => { swipeStartY.current = e.clientY; e.currentTarget.setPointerCapture(e.pointerId); }}
-          onPointerUp={e => { if (swipeStartY.current !== null && swipeStartY.current - e.clientY > 42) unlock(); swipeStartY.current = null; }}
-          onPointerCancel={() => { swipeStartY.current = null; }}
-          onClick={unlock}
-          role="button" tabIndex={0} aria-label="Провести вверх, чтобы разблокировать"
-          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') unlock(); }}>
-          <div className="swipe-hint">Проведите вверх, чтобы открыть</div>
-          <div className="swipe-chevron"><span/><span/><span/></div>
-          <div className="swipe-track"><div className="swipe-thumb"><ArrowRight size={19}/></div></div>
+        <div className="swipe-area">
+          <button className="newyear-enter lock-enter" onClick={unlock}>Войти в игру 🎅🎁</button>
         </div>
       </> : <>
         <div className="intro-status"><Sparkles size={15}/> С НОВЫМ ГОДОМ <span>2027</span></div>
