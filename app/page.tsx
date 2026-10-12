@@ -14,7 +14,12 @@ export default function Home() {
   const [createError, setCreateError] = useState('');
   const [mobileMenu, setMobileMenu] = useState(false);
   const [introStage, setIntroStage] = useState<'locked' | 'newyear' | 'done'>('locked');
-  const unlock = () => setIntroStage('newyear');
+  const [giftOpening, setGiftOpening] = useState(false);
+  const unlock = () => {
+    if (giftOpening) return;
+    setGiftOpening(true);
+    window.setTimeout(() => setIntroStage('newyear'), 950);
+  };
   const finishIntro = () => setIntroStage('done');
   const update = (key: keyof Game, value: string) => setGame(prev => ({ ...prev, [key]: value }));
 
@@ -51,11 +56,13 @@ export default function Home() {
           <div className="lock-date">Скоро Новый год</div>
           <h1 className="welcome-title">Мы хотим сделать<br/><em>маленькое чудо</em></h1>
           <p className="welcome-message">Давайте подарим друг другу немного волшебства! Тайный Санта — это сюрпризы, тёплые пожелания и радость от того, что кто-то готовит подарок именно для тебя.</p>
-          <div className="lock-gift" aria-hidden="true"><span>🎁</span><b>✦</b></div>
+          <button type="button" className={`gift-open-trigger${giftOpening ? " is-opening" : ""}`} onClick={unlock} disabled={giftOpening} aria-label="Открыть новогодний подарок">
+            <span className="gift-open-label">Открыть</span>
+            <svg className="gift-dotted-arrow" viewBox="0 0 92 52" aria-hidden="true"><path d="M4 8 C31 3 39 20 53 29 S73 40 80 30" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeDasharray="2 6"/><path d="M69 29 L80 30 L78 19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <div className="lock-gift" aria-hidden="true"><span>🎁</span><b>✦</b></div>
+          </button>
         </div>
-        <div className="swipe-area">
-          <button className="newyear-enter lock-enter" onClick={unlock}>Дальше <ArrowRight size={18}/></button>
-        </div>
+        <div className="gift-open-caption">{giftOpening ? "Уже открываем твоё чудо…" : "Нажми на подарок"}</div>
       </> : <>
         <div className="intro-status"><Sparkles size={15}/> С НОВЫМ ГОДОМ <span>2027</span></div>
         <div className="newyear-content">
