@@ -521,3 +521,261 @@ footer .brand-mark{background:#ffffff08;border-color:#b98759;color:#f0ce8d}
 @keyframes gift-lid-magic{0%{transform:translateY(-8px) rotate(0) scale(1)}35%{transform:translateY(-22px) rotate(-15deg) scale(1.15)}65%{transform:translateY(-38px) rotate(16deg) scale(1.22)}100%{transform:translateY(-52px) rotate(24deg) scale(1.25);opacity:0}}
 @media(max-width:420px){.gift-open-trigger{gap:0;margin-top:10px}.gift-open-label{font-size:14px}.gift-dotted-arrow{width:62px;margin-left:-4px;margin-right:-12px}.gift-open-trigger .lock-gift{flex-basis:125px;transform:scale(.94);transform-origin:left center}.gift-open-caption{margin-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}}
 @media(prefers-reduced-motion:reduce){.gift-dotted-arrow{animation:none}.gift-open-trigger.is-opening .lock-gift,.gift-open-trigger.is-opening .lock-gift span{animation-duration:.3s}}
+
+
+/* === Unified Secret Santa design system · 2027 === */
+:root{
+  --forest:#17271e;
+  --forest2:#243b2d;
+  --gold:#d5bd84;
+  --gold-strong:#c5a565;
+  --cream:#f3ebdd;
+  --paper:#f8f5ed;
+  --surface:#fffdf8;
+  --muted:#737b70;
+  --red:#8d3b37;
+  --line:#e3dccf;
+  --radius:14px;
+  --shadow-soft:0 12px 34px rgba(28,39,28,.075);
+}
+html{background:var(--paper);scroll-padding-top:88px}
+body{background:var(--paper);color:var(--forest);-webkit-font-smoothing:antialiased}
+::selection{background:#d9c58e80;color:#17271e}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #b89a5c;outline-offset:3px}
+.topbar{height:78px;background:rgba(248,245,237,.96);border-bottom-color:#e5deD1;backdrop-filter:blur(14px)}
+.brand{letter-spacing:.13em}
+.brand-mark{border-radius:11px;background:#f0ecdf;color:#8f7849;border-color:#d4c39b}
+.nav{gap:clamp(18px,3vw,34px)}
+.button,.game-button,.newyear-enter{min-height:44px;border-radius:10px;font-weight:700;letter-spacing:.005em;transition:transform .18s ease,background .18s ease,box-shadow .18s ease,filter .18s ease}
+.button:hover,.game-button:hover,.newyear-enter:hover{transform:translateY(-1px)}
+.button-gold,.game-button.gold,.newyear-enter{background:linear-gradient(135deg,#dec990 0%,#c4a261 100%);color:#1d3023;box-shadow:0 5px 14px #8266371f}
+.button-gold:hover,.game-button.gold:hover,.newyear-enter:hover{filter:brightness(1.04);box-shadow:0 8px 20px #8266372e}
+.button-ghost{border:1px solid #7f917e80;border-radius:10px}
+.button-outline{border-radius:10px}
+.button-dark{border-radius:10px}
+.hero{background:radial-gradient(ellipse at 84% 7%,#35543d 0%,transparent 36%),linear-gradient(130deg,#17271e 0%,#1e3325 62%,#263e2d 100%);color:var(--cream)}
+.hero:before{border-color:#ffffff0d}
+.hero h1{font-family:'Playfair Display',Georgia,serif;letter-spacing:-.045em}
+.hero-text{max-width:470px;color:#dedfd4;line-height:1.8}
+.hero-art{isolation:isolate}
+.hero-art:before{content:'';position:absolute;inset:5% 4% 3%;border:1px solid #ffffff12;border-radius:48% 48% 46% 46%;pointer-events:none;z-index:-1}
+.game-strip{border:1px solid var(--line);border-radius:0 0 16px 16px;background:#fffdf8;box-shadow:var(--shadow-soft)}
+.strip-label{letter-spacing:.18em}
+.section-heading h2,.secret-copy h2,.final-cta h2{letter-spacing:-.045em}
+.step-card{border:1px solid #e7e0d4;border-radius:15px;background:#fffdf8;box-shadow:0 8px 24px #23362708;transition:transform .2s,border-color .2s,box-shadow .2s}
+.step-card:hover{transform:translateY(-3px);border-color:#d4c49c;box-shadow:var(--shadow-soft)}
+.step-icon{border-radius:13px}
+.secret-section{border-radius:18px;overflow:hidden}
+.secret-art{border-radius:16px}
+.final-cta{border-radius:18px;background:radial-gradient(ellipse at 50% 0%,#304a36 0%,#1b2c21 65%)}
+.modal-backdrop{backdrop-filter:blur(8px);background:#101b14b8}
+.modal{border:1px solid #dfd1b3;border-radius:18px;box-shadow:0 28px 90px #09110b4d}
+.modal-close{border-radius:9px}
+.modal input,.modal textarea,.modal select{border-radius:9px;border-color:#ded6c7;background:#fffefa;transition:border-color .18s,box-shadow .18s}
+.modal input:focus,.modal textarea:focus,.modal select:focus{border-color:#b69a5e;box-shadow:0 0 0 3px #c9ad6a26}
+footer:not(.game-footer){border-top:1px solid var(--line)}
+.game-shell{background:var(--paper);color:var(--forest);padding:0 clamp(14px,3vw,36px)}
+.game-topbar{height:76px;border-bottom-color:var(--line)}
+.game-lock{padding:8px 11px;border:1px solid #e1dccf;border-radius:99px;background:#fffdf8;color:#667465}
+.game-main{padding-top:28px}
+.game-hero-card{background:linear-gradient(132deg,#1b3023 0%,#254331 100%);border:1px solid #2f4b36;border-radius:17px;box-shadow:0 14px 36px #1c30220d}
+.game-hero-content{padding:clamp(24px,3.3vw,38px)}
+.game-hero-card h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(31px,4vw,46px);line-height:1.08;letter-spacing:-.04em}
+.game-hero-card p{line-height:1.75}
+.game-hero-gift{background:radial-gradient(ellipse at 50% 45%,#3b6144 0%,#294a36 48%,#203b2c 100%)}
+.game-page-heading{margin:31px 0 20px}
+.game-page-heading h1{font-family:'Playfair Display',Georgia,serif;letter-spacing:-.04em}
+.game-panel,.joined-people,.game-reveal-card{background:var(--surface);border:1px solid var(--line);border-radius:15px;box-shadow:0 7px 24px #20332508}
+.game-panel{padding:clamp(19px,2.6vw,29px);margin-bottom:17px}
+.game-panel h2{font-family:'Playfair Display',Georgia,serif;letter-spacing:-.025em;font-size:clamp(21px,2.5vw,26px)}
+.game-button{padding:12px 17px;border-radius:10px}
+.game-button.light{background:#eee9dd;color:#354a38;border:1px solid #e2dac8}
+.game-input,.game-shell input,.game-shell textarea,.game-shell select{border:1px solid #ded7c9;border-radius:9px;background:#fffefa;color:var(--forest);padding:13px 14px;transition:border-color .18s,box-shadow .18s}
+.game-shell input:focus,.game-shell textarea:focus,.game-shell select:focus{border-color:#b69a5e;box-shadow:0 0 0 3px #c9ad6a26;outline:0}
+.game-shell input[type=file]{padding:0}
+.game-stats-row>div{border:1px solid var(--line);border-radius:12px;background:#fffdf8}
+.game-person-row{border-bottom-color:#eee8dc}
+.game-person-avatar,.game-icon-circle{border-radius:12px;background:#e9ecdf;color:#304b37;font-family:'DM Sans',sans-serif;font-weight:700}
+.game-draw-callout{border-radius:15px;background:linear-gradient(132deg,#1b3023,#254331);padding:clamp(20px,3vw,28px)}
+.game-recipient-card{border-radius:16px;box-shadow:0 14px 34px #20332512}
+.game-recipient-side{padding:clamp(20px,3vw,32px)}
+.game-recipient-person h2{font-family:'Playfair Display',Georgia,serif}
+.game-recipient-note{padding:clamp(20px,3vw,30px)}
+.game-message-card{border-radius:10px;border-left:3px solid #c7ad70}
+.game-message-card>p{overflow-wrap:anywhere}
+.game-reply-form input{min-width:0}
+.game-reply-form button{border-radius:9px}
+.game-message-answer{border-top-color:#e1d9c8}
+.game-empty-inline{border-radius:10px;background:#f6f2e8;padding:20px}
+.game-share-layout{align-items:center}
+.game-qr{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}
+.video-upload-control{border-radius:12px;background:#f7f4ec;border-color:#cbbb95}
+.video-sent-state{border-radius:12px;background:#edf1e7;border:1px solid #dfe6d7}
+.received-video-card{border-radius:12px;overflow:hidden}
+.game-footer{border-top-color:var(--line)}
+.game-loading{color:#5e705d}
+.game-loader{border-color:#e1dccf;border-top-color:#b59a60}
+.notice,.game-notice{border-radius:10px}
+.joined-people{padding:clamp(19px,2.8vw,28px)}
+.joined-avatar{border-radius:13px}
+.game-person-wish{overflow-wrap:anywhere}
+.game-form label,.game-shell label,.modal label{line-height:1.45}
+.game-restrictions-list{gap:10px}
+.game-restriction-item{border-radius:9px;background:#f6f2e9;align-items:center}
+.game-status-buttons button{border-radius:9px}
+.game-topbar .brand-mark{background:#f0ecdf}
+.game-hero-gift .art-caption{letter-spacing:.04em}
+.game-footer .brand{font-weight:700}
+.game-shell .eyebrow{color:#927a47}
+.game-shell .game-recipient-card .eyebrow{color:#d5bd84}
+
+/* Intro: same evergreen, paper and antique-gold palette as the app */
+.santa-intro{
+  background:
+    radial-gradient(ellipse at 50% 31%,#35513a 0%,#243c2b 34%,transparent 66%),
+    radial-gradient(ellipse at 8% 100%,#233b2b 0%,transparent 45%),
+    linear-gradient(145deg,#132119 0%,#1b3022 55%,#17261d 100%);
+  color:#f8f3e8;
+}
+.santa-intro:before{opacity:.12;background-image:radial-gradient(#e8d6a9 1px,transparent 1px),radial-gradient(#e8d6a9 1px,transparent 1px)}
+.intro-status{color:#d9c38d;letter-spacing:.19em}
+.intro-status span{border-color:#ddc98b5c;background:#fff8e906;color:#f5e8c5}
+.intro-stars i{color:#e4ce91;text-shadow:0 0 13px #d5bd8466}
+.lock-date{color:#e9d9b9}
+.welcome-title,.newyear-content h1{font-family:'Playfair Display',Georgia,serif;letter-spacing:-.045em}
+.welcome-title em,.newyear-content h1 em{color:#dec78d}
+.welcome-message,.newyear-message{color:#e3e1d6}
+.gift-open-label{color:#f0dca7}
+.gift-open-caption,.newyear-bottom{color:#d8d0ba;letter-spacing:.16em}
+.gift-open-trigger{gap:3px}
+.gift-open-trigger:hover .gift-open-label{color:#fff0c6}
+.gift-dotted-arrow{color:#d8bd7b}
+.newyear-number{color:#e2cd96;text-shadow:0 5px 30px #e0c98b20}
+.newyear-content h1{color:#f8f3e8}
+.newyear-thanks{color:#e5cf95}
+.wish-chips span{border-color:#e3d2a64a;background:#fffaf008;color:#f5ecda;border-radius:99px}
+.newyear-enter{border:1px solid #e4d09b;min-width:min(300px,100%);min-height:52px}
+.confetti i{background:#d9c28c}
+.confetti i:nth-child(3n){background:#a65d4e}
+.confetti i:nth-child(3n + 1){background:#f4ead3}
+.confetti i:nth-child(4n){background:#8eae86}
+
+/* Drawn gift illustration — no emoji placeholder */
+.lock-gift,.gift-open-trigger .lock-gift{position:relative;display:block;width:210px;height:190px;flex:0 0 210px;margin:0;filter:drop-shadow(0 19px 18px #07140b63);animation:gift-float 3.8s ease-in-out infinite}
+.lock-gift:before,.lock-gift:after{content:none}
+.lock-gift span{position:absolute;z-index:auto;font-size:initial;filter:none;transform:none}
+.gift-aura{position:absolute;left:25px;top:8px;width:160px;height:155px;border-radius:50%;background:radial-gradient(circle,#d7bf7a35 0%,#d7bf7a12 43%,transparent 72%);filter:blur(5px)}
+.gift-box-shadow{position:absolute;left:42px;bottom:15px;width:127px;height:18px;border-radius:50%;background:#050e08a6;filter:blur(8px)}
+.gift-box-body{position:absolute;z-index:2;left:42px;bottom:25px;width:126px;height:86px;border:1px solid #d9bd7b8c;border-radius:4px 4px 8px 8px;background:linear-gradient(110deg,#9c4138 0%,#7f2e2d 48%,#632428 100%);box-shadow:inset 7px 0 12px #e27b5833,inset -8px 0 13px #39161c45,0 9px 18px #07130b42;overflow:hidden}
+.gift-ribbon-vertical{position:absolute;top:0;bottom:0;left:51px;width:23px;background:linear-gradient(90deg,#9d7a3f 0%,#ead59a 35%,#c2a160 68%,#8c6a35 100%);box-shadow:0 0 0 1px #eddb9c38}
+.gift-box-shine{position:absolute;top:10px;left:9px;width:2px;height:54px;background:#e8a18a55;border-radius:9px}
+.gift-box-lid{position:absolute;z-index:4;left:32px;top:65px;width:146px;height:28px;border:1px solid #f0d899aa;border-radius:4px;background:linear-gradient(180deg,#b85a48 0%,#8d342f 70%,#772b2b 100%);box-shadow:0 7px 11px #08130c47,inset 0 2px 3px #f7c49c38;transform:rotate(-2deg);transform-origin:25% 80%}
+.gift-ribbon-horizontal{position:absolute;left:60px;top:0;bottom:0;width:22px;background:linear-gradient(90deg,#9d7a3f,#f2dfa3 34%,#c7a561 72%,#896431);box-shadow:0 0 0 1px #f2dda05c}
+.gift-bow{position:absolute;z-index:5;left:78px;top:35px;width:53px;height:39px;transform:rotate(-3deg)}
+.gift-bow i{position:absolute;top:8px;width:29px;height:22px;border:4px solid #d7bd79;background:linear-gradient(145deg,#e4d09822,#5d7c4a44);box-shadow:inset 0 0 0 1px #fff1bc35}
+.gift-bow i:first-child{left:0;border-radius:19px 19px 6px 19px;transform:rotate(28deg)}
+.gift-bow i:nth-child(2){right:0;border-radius:19px 19px 19px 6px;transform:rotate(-28deg)}
+.gift-bow b{position:absolute;z-index:2;left:21px;top:18px;width:13px;height:13px;border-radius:4px;background:linear-gradient(135deg,#f3dfa0,#b58f4d);box-shadow:0 2px 4px #1c160c77}
+.gift-spark{z-index:1;color:#e9d49a;text-shadow:0 0 14px #d6bd7d65;animation:star-twinkle 2.8s ease-in-out infinite alternate}
+.gift-spark-left{left:17px;top:65px;font-size:17px}
+.gift-spark-right{right:12px;top:100px;font-size:22px;animation-delay:-1.4s}
+.gift-open-trigger .lock-gift{transform-origin:center center}
+.gift-open-trigger:hover .lock-gift{filter:drop-shadow(0 23px 25px #07140b75);transform:translateY(-3px) scale(1.025)}
+.gift-open-trigger.is-opening .lock-gift{animation:gift-opening .95s cubic-bezier(.2,.75,.25,1) forwards}
+.gift-open-trigger.is-opening .lock-gift span{animation:none!important}
+.gift-open-trigger.is-opening .gift-box-lid,.gift-open-trigger.is-opening .gift-bow{animation:gift-lid-magic .95s ease-in-out forwards}
+.gift-open-trigger.is-opening .gift-box-body{animation:gift-box-light .95s ease-out forwards}
+.gift-open-trigger.is-opening .gift-spark{animation:gift-spark-out .65s ease-out forwards}
+@keyframes gift-opening{0%{transform:scale(1) rotate(0);opacity:1;filter:drop-shadow(0 19px 18px #07140b63)}38%{transform:scale(1.08) rotate(-3deg);filter:drop-shadow(0 0 20px #ddc78375)}70%{transform:scale(1.12) rotate(3deg);filter:drop-shadow(0 0 34px #f0daa2b0)}100%{transform:scale(.78) translateY(-18px);opacity:.05;filter:drop-shadow(0 0 42px #efdaa3)}}
+@keyframes gift-lid-magic{0%{transform:translateY(0) rotate(-2deg)}36%{transform:translate(-2px,-24px) rotate(-14deg)}65%{transform:translate(9px,-43px) rotate(14deg)}100%{transform:translate(20px,-69px) rotate(23deg);opacity:0}}
+@keyframes gift-box-light{0%,100%{box-shadow:inset 7px 0 12px #e27b5833,inset -8px 0 13px #39161c45,0 9px 18px #07130b42}55%{box-shadow:inset 7px 0 12px #e27b5866,inset -8px 0 13px #39161c45,0 0 35px #ecd08c99}}
+@keyframes gift-spark-out{to{opacity:0;transform:scale(1.8) translateY(-13px)}}
+@media(max-width:900px){
+  .hero{padding-left:6vw;padding-right:6vw}
+  .game-main{padding-top:24px}
+}
+@media(max-width:760px){
+  .topbar{height:68px;padding:0 18px}
+  .hero{grid-template-columns:1fr;gap:26px;min-height:0;padding:54px 22px 35px}
+  .hero h1{font-size:clamp(44px,13vw,64px);margin:21px 0 18px}
+  .hero-art{min-height:330px}
+  .game-strip{gap:18px;padding:22px}
+  .section{padding:60px 22px}
+  .steps{grid-template-columns:1fr;gap:12px}
+  .step-card{padding:23px}
+  .secret-section{grid-template-columns:1fr}
+  .secret-copy{padding:32px 24px}
+  .final-cta{padding:42px 22px}
+  .modal-backdrop{align-items:flex-end;padding:10px}
+  .modal{width:100%;max-height:calc(100dvh - 20px);padding:30px 21px 22px;border-radius:18px 18px 13px 13px}
+  .game-shell{padding:0 14px}
+  .game-topbar{height:66px;gap:10px}
+  .game-lock{display:none}
+  .game-main{padding:21px 0 34px}
+  .game-hero-card{grid-template-columns:1fr}
+  .game-hero-content{padding:24px 21px 27px}
+  .game-hero-card h1{font-size:34px}
+  .game-hero-gift{min-height:225px}
+  .game-meta-grid{gap:14px;margin:21px 0}
+  .game-meta-grid>div{min-width:calc(50% - 8px)}
+  .game-page-heading{align-items:flex-start;flex-wrap:wrap;margin:25px 0 17px}
+  .game-page-heading h1{font-size:30px}
+  .game-panel{padding:20px 17px;border-radius:13px}
+  .game-recipient-card{grid-template-columns:1fr}
+  .game-recipient-side,.game-recipient-note{padding:22px 19px}
+  .game-stats-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  .game-stats-row>div{padding:12px 9px;grid-template-columns:1fr;gap:6px}
+  .game-stats-row strong{font-size:17px}
+  .game-person-row{grid-template-columns:38px minmax(0,1fr) auto;gap:9px}
+  .game-person-wish{grid-column:2/-1;margin-top:-3px}
+  .game-restriction-form{grid-template-columns:1fr;align-items:stretch}
+  .game-restrictions-list{grid-template-columns:1fr}
+  .game-draw-callout{align-items:flex-start;flex-direction:column}
+  .game-draw-callout .game-button{width:100%}
+  .game-share-layout{grid-template-columns:1fr}
+  .game-qr{justify-self:start}
+  .received-video-list{grid-template-columns:1fr}
+  .game-footer{flex-direction:column;align-items:flex-start;gap:9px;padding:20px 0}
+  .game-form-grid{grid-template-columns:1fr}
+  .game-message-form .game-button{width:100%}
+  .gift-open-trigger{width:min(100%,355px);gap:0;margin-top:12px}
+  .gift-open-label{font-size:14px;transform:translateY(-13px)}
+  .gift-dotted-arrow{width:57px;margin-left:-2px;margin-right:-8px}
+  .gift-open-trigger .lock-gift{width:190px;height:174px;flex-basis:190px;transform:scale(.95);transform-origin:left center}
+  .gift-open-trigger:hover .lock-gift{transform:translateY(-3px) scale(.97)}
+  .gift-open-caption{margin-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
+}
+@media(max-width:430px){
+  .game-stats-row{grid-template-columns:1fr}
+  .game-stats-row>div{grid-template-columns:25px 1fr;align-items:center}
+  .game-stats-row svg{grid-row:span 2}
+  .game-person-row{grid-template-columns:36px minmax(0,1fr)}
+  .game-person-row>.game-person-sub:last-child{grid-column:2}
+  .game-person-wish{grid-column:2}
+  .gift-open-trigger .lock-gift{width:174px;height:163px;flex-basis:174px;transform:scale(.9)}
+  .gift-open-trigger:hover .lock-gift{transform:translateY(-3px) scale(.92)}
+  .gift-open-label{font-size:13px}
+  .gift-dotted-arrow{width:48px}
+  .newyear-content{padding:20px 19px 16px}
+  .newyear-number{font-size:clamp(84px,23vw,120px)}
+  .newyear-content h1{font-size:clamp(28px,8vw,37px)}
+  .wish-chips{gap:6px;margin-bottom:20px}
+  .wish-chips span{padding:8px 10px;font-size:11px}
+}
+@media(max-height:720px){
+  .welcome-content{padding-top:3px;padding-bottom:2px}
+  .welcome-title{font-size:clamp(28px,6.5vw,39px);margin:12px 0}
+  .welcome-message{font-size:12px;line-height:1.55}
+  .gift-open-trigger{margin-top:3px}
+  .gift-open-trigger .lock-gift{transform:scale(.82);transform-origin:center center}
+  .gift-open-trigger:hover .lock-gift{transform:translateY(-2px) scale(.84)}
+  .gift-open-caption{margin-bottom:calc(env(safe-area-inset-bottom,0px) + 10px)}
+  .newyear-number{font-size:clamp(77px,17vh,125px);margin:7px 0}
+  .newyear-message{font-size:12px;line-height:1.55;margin-bottom:12px}
+  .newyear-thanks{margin-bottom:15px}
+  .wish-chips{margin-bottom:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .gift-spark,.gift-open-trigger .lock-gift,.gift-open-trigger.is-opening .gift-box-lid,.gift-open-trigger.is-opening .gift-bow,.gift-open-trigger.is-opening .gift-box-body{animation:none!important}
+  .gift-open-trigger:hover .lock-gift{transform:none}
+}
