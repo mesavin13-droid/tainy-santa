@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { ArrowRight, Check, ChevronDown, Gift, LockKeyhole, Snowflake, Sparkles, Users, CalendarDays, Menu, X } from 'lucide-react';
+import { ArrowRight, Check, ChevronDown, Gift, Heart, LockKeyhole, Snowflake, Sparkles, Users, CalendarDays, Menu, X } from 'lucide-react';
 
 type Game = { name: string; company: string; budget: string; date: string; deadline: string; rules: string };
 const initialGame: Game = { name: 'Тайный Санта 2027', company: 'Наша компания', budget: '1500', date: '2027-12-25', deadline: '2027-12-10', rules: 'Дарим подарки в пределах бюджета. Главное — внимание и немного волшебства.' };
@@ -81,9 +81,9 @@ export default function Home() {
           <div className="newyear-number">2027</div>
           <h1>С наступающим<br/><em>Новым годом!</em></h1>
           <p className="newyear-message">Пусть в новом году будет больше поводов улыбаться, тёплых встреч, неожиданных подарков и маленьких чудес.</p>
-          <p className="newyear-thanks">Спасибо, что играете с нами ❤️</p>
-          <div className="wish-chips"><span>✨ Счастья</span><span>🎁 Чудес</span><span>❤️ Тепла</span></div>
-          <button className="newyear-enter" onClick={finishIntro}>Войти в игру 🎅🎁</button>
+          <p className="newyear-thanks">Спасибо, что играете с нами <Heart size={14} fill="currentColor" aria-hidden="true" /></p>
+          <div className="wish-chips"><span><Sparkles size={13} aria-hidden="true" /> Счастья</span><span><Gift size={13} aria-hidden="true" /> Чудес</span><span><Heart size={13} aria-hidden="true" /> Тепла</span></div>
+          <button className="newyear-enter" onClick={finishIntro}>Войти в игру <ArrowRight size={16} aria-hidden="true" /></button>
         </div>
         <div className="newyear-bottom">Пусть желания сбываются</div>
         <div className="confetti" aria-hidden="true">{Array.from({length: 38}, (_, i) => <i key={i} style={{'--i': i} as React.CSSProperties}/>)}</div>
