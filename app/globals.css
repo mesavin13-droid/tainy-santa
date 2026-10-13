@@ -1128,3 +1128,52 @@ footer { border-top: 1px solid rgba(223,195,139,.15); }
 @media (prefers-reduced-motion: reduce) {
   .gift-box, .step-card { animation: none !important; transition: none !important; }
 }
+
+
+/* Final polish: keep every game state consistent, including media and QR panels. */
+.game-topbar .brand-mark {
+  background: linear-gradient(145deg, #244d37, #10291f 72%);
+  border-color: #c7ae78;
+  color: #f5e5bd;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 5px 14px rgba(16,41,31,.12);
+}
+.game-topbar .brand-mark svg { filter: drop-shadow(0 1px 3px rgba(235,210,154,.32)); }
+.newyear-thanks { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.wish-chips span { display: inline-flex; align-items: center; gap: 7px; }
+.wish-chips span svg { color: #dfc38b; flex: 0 0 auto; }
+.newyear-enter { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.game-panel-heading { flex-wrap: wrap; align-items: flex-start; }
+.game-panel-heading > div { flex: 1 1 230px; min-width: 0; }
+.game-heading-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.game-share-layout { display: grid; grid-template-columns: minmax(0, 1fr) 150px; align-items: center; gap: 24px; }
+.game-share-layout > p { min-width: 0; overflow-wrap: anywhere; }
+.game-qr { display: grid; justify-items: center; align-content: center; gap: 9px; min-width: 132px; }
+.game-qr img { display: block; width: 112px; height: 112px; object-fit: contain; image-rendering: pixelated; border-radius: 4px; }
+.game-qr span { color: #6d7568; font-size: 10px; text-align: center; letter-spacing: .04em; }
+.game-qr-placeholder { width: 112px; height: 112px; border: 1px dashed #d5c6a4; border-radius: 8px; display: grid; place-items: center; padding: 12px; color: #7d806f; font-size: 11px; text-align: center; }
+.video-greeting-panel > h3 { font: 500 19px 'Playfair Display', Georgia, serif; color: #233c2b; }
+.video-greeting-panel .game-muted { max-width: 720px; }
+.received-video-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.received-video-head > div:last-child { display: grid; gap: 4px; min-width: 0; }
+.received-video-head strong { color: #233c2b; font-size: 12px; }
+.received-video-head span { color: #788071; font-size: 10px; }
+.received-video-card video { display: block; width: 100%; max-height: 360px; aspect-ratio: 16 / 9; object-fit: contain; background: #091b13; }
+.game-recipient-note strong { display: flex; justify-content: center; align-items: center; min-height: 30px; }
+.game-recipient-note strong svg { color: #e3c788; filter: drop-shadow(0 1px 6px rgba(223,195,139,.24)); }
+@media (max-width: 760px) {
+  .game-panel-heading { gap: 12px; }
+  .game-panel-heading > div { flex-basis: 100%; }
+  .game-panel-heading > .game-button, .game-panel-heading > a { flex: 1 1 auto; }
+  .game-share-layout { grid-template-columns: minmax(0, 1fr) 124px; gap: 12px; }
+  .game-qr { min-width: 0; padding: 9px; }
+  .game-qr img, .game-qr-placeholder { width: 96px; height: 96px; }
+}
+@media (max-width: 430px) {
+  .game-share-layout { grid-template-columns: 1fr; }
+  .game-qr { justify-self: start; }
+  .game-panel-heading > .game-button, .game-panel-heading > a { width: 100%; }
+  .newyear-thanks { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-hero-card, .video-greeting-panel, .game-qr { scroll-behavior: auto; }
+}
