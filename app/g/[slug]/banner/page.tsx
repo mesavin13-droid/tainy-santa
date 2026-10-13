@@ -21,13 +21,13 @@ export default function PrintableBannerPage() {
     <style jsx global>{`
       @page { size: A4 portrait; margin: 0; }
       * { box-sizing: border-box; }
-      body { margin: 0; background: #eee; }
-      .poster { width: 210mm; height: 297mm; margin: 12px auto; padding: 15mm; background: #123b2e; color: #f8f1df; font-family: Arial, sans-serif; text-align: center; }
-      .frame { height: 100%; border: 1px solid #c8a96a; outline: 1px solid #c8a96a; outline-offset: 4mm; padding: 10mm 8mm; display:flex; flex-direction:column; align-items:center; }
-      .kicker { color:#d7bc7a; letter-spacing:.2em; font-size:10pt; font-weight:bold; }
+      body { margin: 0; background: #f1ede4; }
+      .poster { width: 210mm; height: 297mm; margin: 12px auto; padding: 15mm; background: #17271e; color: #f3ebdd; font-family: 'DM Sans', Arial, sans-serif; text-align: center; }
+      .frame { height: 100%; border: 1px solid #d5bd84; outline: 1px solid #c8a96a; outline-offset: 4mm; padding: 10mm 8mm; display:flex; flex-direction:column; align-items:center; }
+      .kicker { color:#d5bd84; letter-spacing:.2em; font-size:10pt; font-weight:bold; }
       .stars { color:#d7bc7a; margin:8mm 0 2mm; font-size:18pt; }
-      h1 { font-family: Georgia,serif; font-size:40pt; line-height:1; margin:0; }
-      .company { color:#e6d5ad; font-size:17pt; letter-spacing:.14em; font-weight:bold; margin-top:7mm; }
+      h1 { font-family: 'Playfair Display', Georgia,serif; font-size:40pt; line-height:1; margin:0; }
+      .company { color:#ded0ac; font-size:17pt; letter-spacing:.14em; font-weight:bold; margin-top:7mm; }
       .rule { width:34mm; border-top:1px solid #c8a96a; margin:7mm 0; }
       .subtitle { font: 20pt Georgia,serif; margin:0; }
       .desc { font-size:11pt; line-height:1.55; max-width:140mm; margin:5mm auto; }
@@ -36,13 +36,13 @@ export default function PrintableBannerPage() {
       .detail span { display:block; color:#d7bc7a; font-size:8pt; margin-bottom:2mm; letter-spacing:.08em; }
       .detail strong { font-size:11pt; }
       .cta { margin-top:auto; padding-top:7mm; font-size:14pt; font-weight:bold; }
-      .qrbox { background:#fff; padding:4mm; margin-top:4mm; }
+      .qrbox { background:#fff; padding:4mm; margin-top:4mm; border-radius:3mm; }
       .qr { width:43mm; height:43mm; display:block; }
       .scan { color:#e6d5ad; font-size:9pt; margin-top:3mm; }
       .url { font-size:7pt; margin-top:2mm; overflow-wrap:anywhere; }
       .footer { color:#d7bc7a; font-size:8pt; letter-spacing:.12em; margin-top:6mm; }
       .actions { display:flex; justify-content:center; gap:12px; margin:16px; font-family:Arial,sans-serif; }
-      .actions button,.actions a { background:#123b2e; color:white; border:0; border-radius:7px; padding:12px 16px; text-decoration:none; cursor:pointer; }
+      .actions button,.actions a { background:#17271e; color:#f3ebdd; border:1px solid #d5bd84; border-radius:10px; padding:12px 16px; text-decoration:none; cursor:pointer; }
       @media print { body { background:#123b2e; print-color-adjust:exact; -webkit-print-color-adjust:exact; } .poster { margin:0; } .actions { display:none; } }
     `}</style>
     <section className="poster"><div className="frame">
