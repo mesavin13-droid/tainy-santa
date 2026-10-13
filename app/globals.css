@@ -1177,3 +1177,47 @@ footer { border-top: 1px solid rgba(223,195,139,.15); }
 @media (prefers-reduced-motion: reduce) {
   .game-hero-card, .video-greeting-panel, .game-qr { scroll-behavior: auto; }
 }
+
+
+/* Shared dimensional gift art across splash, landing and game invitation. */
+.gift-stage {
+  position: relative; z-index: 1; width: 100%; min-height: 270px;
+  display: grid; place-items: center; isolation: isolate;
+}
+.gift-stage::before {
+  content: ""; position: absolute; z-index: -1; width: min(83%, 370px); aspect-ratio: 1;
+  border-radius: 50%; background: radial-gradient(circle, rgba(224,190,119,.19), rgba(224,190,119,.06) 42%, transparent 72%);
+  filter: blur(8px);
+}
+.gift-render {
+  display: block; position: relative; width: min(100%, 405px); height: auto;
+  object-fit: contain; overflow: visible; transform-origin: 50% 62%;
+  filter: drop-shadow(0 25px 20px rgba(0,0,0,.23));
+  animation: santa-gift-float 5.2s ease-in-out infinite;
+}
+.hero-art .gift-stage { min-height: 290px; }
+.hero-art .gift-render { width: min(100%, 400px); }
+.game-hero-gift .gift-render { width: min(94%, 330px); z-index: 1; }
+.lock-gift { width: 230px; height: 215px; flex-basis: 230px; }
+.lock-gift-render { display: block; width: 100%; height: 100%; object-fit: contain; overflow: visible; }
+.gift-open-trigger.is-opening .lock-gift { animation: gift-opening .95s cubic-bezier(.2,.75,.25,1) forwards; }
+@keyframes santa-gift-float {
+  0%,100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-9px) rotate(1deg); }
+}
+@media (max-width: 760px) {
+  .gift-stage { min-height: 240px; }
+  .hero-art .gift-stage { min-height: 245px; }
+  .hero-art .gift-render { width: min(100%, 345px); }
+  .game-hero-gift .gift-render { width: min(87%, 285px); }
+  .lock-gift { width: 205px; height: 190px; flex-basis: 205px; }
+}
+@media (max-width: 430px) {
+  .gift-stage { min-height: 215px; }
+  .hero-art .gift-stage { min-height: 220px; }
+  .hero-art .gift-render { width: min(100%, 300px); }
+  .lock-gift { width: 185px; height: 174px; flex-basis: 185px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gift-render { animation: none !important; }
+}
