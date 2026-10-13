@@ -1,11 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import QRCode from 'qrcode';
 
 export default function PrintableBannerPage() {
   const { slug } = useParams<{ slug: string }>();
   const [game, setGame] = useState<any>(null);
   const [origin, setOrigin] = useState('');
+  const [qrCode, setQrCode] = useState('');
   const [error, setError] = useState('');
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -13,10 +15,25 @@ export default function PrintableBannerPage() {
       .then(async r => { const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Не удалось загрузить игру'); setGame(d.game); })
       .catch(e => setError(e.message || 'Ошибка загрузки'));
   }, [slug]);
-  const url = origin + '/g/' + slug;
+  const url = origin ? origin + '/g/' + slug : '';
+  useEffect(() => {
+    if (!url) return;
+    let cancelled = false;
+    QRCode.toDataURL(url, {
+      width: 640,
+      margin: 1,
+      errorCorrectionLevel: 'H',
+      color: { dark: '#10291f', light: '#ffffff' },
+    }).then((dataUrl) => {
+      if (!cancelled) setQrCode(dataUrl);
+    }).catch(() => {
+      if (!cancelled) setError('Не удалось создать QR-код. Обновите страницу.');
+    });
+    return () => { cancelled = true; };
+  }, [url]);
   const date = (s?: string) => s ? new Date(s + 'T12:00:00').toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Уточните у организатора';
   if (error) return <main style={{padding:24}}>{error}<p><a href={'/g/'+slug}>Назад в игру</a></p></main>;
-  if (!game || !origin) return <main style={{padding:24}}>Готовим макет…</main>;
+  if (!game || !origin || !qrCode) return <main style={{padding:24}}>Готовим макет…</main>;
   return <main>
     <style jsx global>{`
       @page { size: A4 portrait; margin: 0; }
@@ -81,7 +98,7 @@ export default function PrintableBannerPage() {
       <p className="desc">Присоединяйся к праздничному обмену подарками! Получи имя своего получателя, выбери подарок и сохрани секрет до самого вручения.</p>
       <div className="details"><div className="detail"><span>БЮДЖЕТ ПОДАРКА</span><strong>{Number(game.budget).toLocaleString('ru-RU')} ₽</strong></div><div className="detail"><span>ДЕНЬ ОБМЕНА</span><strong>{date(game.exchange_date)}</strong></div></div>
       <div className="cta">Сканируй QR-код и участвуй</div>
-      <div className="qrbox"><img className="qr" src={'https://api.qrserver.com/v1/create-qr-code/?size=500x500&format=png&ecc=H&data='+encodeURIComponent(url)} alt="QR-код игры"/></div>
+      <div className="qrbox"><img className="qr" src={qrCode} alt="QR-код игры"/></div>
       <div className="scan">Откроется регистрация в игре «{game.name}»</div>
       <div className="url">{url}</div>
       <div className="footer">СЕКРЕТЫ • ПОДАРКИ • ПРАЗДНИЧНОЕ НАСТРОЕНИЕ</div>
