@@ -60,7 +60,7 @@ export default function Home() {
             <span className="gift-open-label">Открыть</span>
             <svg className="gift-dotted-arrow" viewBox="0 0 92 52" aria-hidden="true"><path d="M4 8 C31 3 39 20 53 29 S73 40 80 30" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeDasharray="2 6"/><path d="M69 29 L80 30 L78 19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             <div className="lock-gift" aria-hidden="true">
-              <img className="lock-gift-render" src="/secret-santa-gift.svg" alt="" />
+              <img className="lock-gift-render" src="/secret-santa-winter-scene.svg" alt="Дед Мороз, снеговик и новогодняя ёлка" />
             </div>
           </button>
         </div>
@@ -70,6 +70,7 @@ export default function Home() {
         <div className="newyear-content">
           <div className="newyear-kicker">Пусть сбудется всё хорошее</div>
           <div className="newyear-number">2027</div>
+          <img className="newyear-winter-scene" src="/secret-santa-winter-scene.svg" alt="" aria-hidden="true" />
           <h1>С наступающим<br/><em>Новым годом!</em></h1>
           <p className="newyear-message">Пусть в новом году будет больше поводов улыбаться, тёплых встреч, неожиданных подарков и маленьких чудес.</p>
           <p className="newyear-thanks">Спасибо, что играете с нами <Heart size={14} fill="currentColor" aria-hidden="true" /></p>

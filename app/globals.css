@@ -1358,3 +1358,54 @@ footer { border-top: 1px solid rgba(223,195,139,.15); }
   .santa-lock-screen .gift-open-trigger.is-opening .lock-gift { animation: gift-opening .3s ease forwards; }
   .santa-lock-screen .gift-dotted-arrow { animation: none; }
 }
+
+
+/* New Year character scene — Ded Moroz, snowman, fir tree and a 3D gift. */
+.santa-lock-screen .gift-open-trigger .lock-gift {
+  width: clamp(320px, 94vw, 430px);
+  height: clamp(250px, 68vw, 335px);
+  right: 50%;
+  top: 49%;
+  transform: translate(50%, -50%);
+  filter: drop-shadow(0 20px 18px rgba(0,0,0,.34));
+}
+.santa-lock-screen .gift-open-trigger .lock-gift-render {
+  object-fit: contain;
+}
+.santa-lock-screen .gift-open-trigger.is-opening .lock-gift {
+  animation: winter-scene-open .95s cubic-bezier(.2,.75,.25,1) forwards;
+}
+@keyframes winter-scene-open {
+  0% { transform: translate(50%,-50%) scale(1); opacity: 1; }
+  30% { transform: translate(50%,-52%) scale(1.06); filter: drop-shadow(0 0 28px rgba(239,208,142,.6)); }
+  100% { transform: translate(50%,-64%) scale(.78); opacity: 0; filter: drop-shadow(0 0 38px rgba(239,208,142,.2)); }
+}
+.santa-lock-screen .gift-open-label { left: 3%; top: 65%; }
+.santa-lock-screen .gift-dotted-arrow { left: 17%; top: 15%; transform: rotate(22deg); }
+.newyear-winter-scene {
+  display: block;
+  width: min(74vw, 285px);
+  height: clamp(105px, 20vh, 150px);
+  object-fit: contain;
+  margin: -3px auto 4px;
+  filter: drop-shadow(0 12px 14px rgba(0,0,0,.22));
+}
+.santa-newyear-screen .newyear-content { gap: 0; }
+@media (max-width: 430px) {
+  .santa-lock-screen .gift-open-trigger { height: clamp(240px, 31vh, 285px); margin-top: 2px; }
+  .santa-lock-screen .gift-open-trigger .lock-gift {
+    width: min(108vw, 420px);
+    height: clamp(250px, 73vw, 310px);
+    right: 50%;
+  }
+  .santa-lock-screen .gift-open-label { left: 1%; top: 65%; }
+  .santa-lock-screen .gift-dotted-arrow { left: 14%; top: 13%; width: 75px; }
+  .newyear-winter-scene { width: min(72vw, 245px); height: 105px; margin: -5px auto 2px; }
+}
+@media (max-height: 760px) {
+  .santa-lock-screen .gift-open-trigger .lock-gift { width: min(90vw, 365px); height: 245px; }
+  .newyear-winter-scene { height: 86px; width: min(68vw, 220px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .santa-lock-screen .gift-open-trigger.is-opening .lock-gift { animation: none; opacity: 0; }
+}
