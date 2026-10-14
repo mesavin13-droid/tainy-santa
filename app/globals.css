@@ -1409,3 +1409,121 @@ footer { border-top: 1px solid rgba(223,195,139,.15); }
 @media (prefers-reduced-motion: reduce) {
   .santa-lock-screen .gift-open-trigger.is-opening .lock-gift { animation: none; opacity: 0; }
 }
+
+
+/* Screenshot corrections — keep the scene centered even after iOS touch-hover. */
+.topbar .brand { color: #173729; }
+.topbar .brand-mark {
+  background: linear-gradient(145deg, #244d37, #10291f);
+  color: #f1dfad;
+  border-color: #c5a66a;
+}
+.topbar .mobile-toggle { color: #173729; }
+.hero-title-mobile { display: none; }
+@media (max-width: 760px) {
+  .hero-title-desktop { display: none; }
+  .hero-title-mobile {
+    display: block;
+    font-size: clamp(40px, 10.8vw, 46px);
+    line-height: 1.035;
+    letter-spacing: -.055em;
+    margin: 23px 0 17px;
+  }
+  .hero { padding: 42px 24px 28px; }
+  .hero-copy { width: 100%; }
+  .hero .eyebrow {
+    font-size: 9px;
+    letter-spacing: .12em;
+    max-width: 100%;
+  }
+  .hero-text { font-size: 14px; line-height: 1.68; }
+  .hero-actions { gap: 10px; margin-top: 22px; }
+  .hero-actions .button { width: 100%; }
+  .hero-notes { column-gap: 14px; row-gap: 10px; margin-top: 20px; }
+}
+@media (max-width: 430px) {
+  .topbar { padding-inline: 18px; }
+  .topbar .brand { font-size: 11px; letter-spacing: .10em; }
+  .topbar .brand-mark { width: 36px; height: 36px; }
+  .hero-title-mobile { font-size: clamp(39px, 10.5vw, 43px); }
+}
+
+/* The tap-triggered Safari hover state used to remove the horizontal centering
+   transform, pushing Ded Moroz off the left edge. Always preserve both axes. */
+.santa-lock-screen .gift-open-trigger .lock-gift {
+  left: 50%;
+  right: auto;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(88vw, 350px);
+  height: auto;
+  aspect-ratio: 640 / 500;
+  overflow: visible;
+}
+.santa-lock-screen .gift-open-trigger .lock-gift-render {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.santa-lock-screen .gift-open-trigger:hover .lock-gift {
+  transform: translate(-50%, calc(-50% - 4px)) scale(1.02);
+}
+.santa-lock-screen .gift-open-trigger.is-opening .lock-gift {
+  animation: centered-winter-scene-open .95s cubic-bezier(.2,.75,.25,1) forwards;
+}
+@keyframes centered-winter-scene-open {
+  0% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+  30% { transform: translate(-50%,-53%) scale(1.05); filter: drop-shadow(0 0 24px rgba(239,208,142,.55)); }
+  68% { transform: translate(-50%,-60%) scale(1.1); filter: drop-shadow(0 0 34px rgba(239,208,142,.75)); }
+  100% { transform: translate(-50%,-72%) scale(.78); opacity: 0; filter: drop-shadow(0 0 38px rgba(239,208,142,.2)); }
+}
+.santa-lock-screen .gift-open-trigger { overflow: visible; }
+.santa-lock-screen .gift-open-label { left: 2%; top: 71%; }
+.santa-lock-screen .gift-dotted-arrow { left: 22%; top: 15%; transform: rotate(18deg); }
+@media (max-width: 430px) {
+  .santa-lock-screen .gift-open-trigger {
+    width: min(100%, 370px);
+    height: clamp(255px, 32vh, 290px);
+    min-height: 255px;
+    margin-top: 3px;
+  }
+  .santa-lock-screen .gift-open-trigger .lock-gift {
+    width: min(94vw, 360px);
+    aspect-ratio: 640 / 500;
+    left: 50%;
+    right: auto;
+    top: 50%;
+  }
+  .santa-lock-screen .gift-open-trigger:hover .lock-gift {
+    transform: translate(-50%, calc(-50% - 3px)) scale(1.015);
+  }
+  .santa-lock-screen .gift-open-label { left: 1%; top: 72%; }
+  .santa-lock-screen .gift-dotted-arrow { left: 20%; top: 13%; width: 76px; }
+}
+.newyear-winter-scene {
+  display: block;
+  width: min(74vw, 255px);
+  height: clamp(115px, 19vh, 165px);
+  object-fit: contain;
+  margin: -3px auto 5px;
+  filter: drop-shadow(0 13px 13px rgba(0,0,0,.22));
+}
+.santa-newyear-screen .newyear-content { padding-top: 12px; padding-bottom: 12px; }
+.santa-newyear-screen .newyear-number {
+  font-size: clamp(76px, 19vw, 112px);
+  margin: 3px 0 1px;
+}
+.santa-newyear-screen .newyear-content h1 { margin: 8px 0 11px; }
+.santa-newyear-screen .newyear-message { font-size: 13px; line-height: 1.6; margin-bottom: 14px; }
+.santa-newyear-screen .wish-chips { margin-bottom: 16px; }
+@media (max-height: 760px) {
+  .newyear-winter-scene { height: 105px; width: min(68vw, 210px); }
+  .santa-newyear-screen .newyear-number { font-size: clamp(70px, 16vh, 94px); }
+  .santa-newyear-screen .newyear-content h1 { margin: 5px 0 8px; }
+  .santa-newyear-screen .newyear-message { margin-bottom: 10px; }
+  .santa-newyear-screen .wish-chips { margin-bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .santa-lock-screen .gift-open-trigger.is-opening .lock-gift { animation: none; opacity: 0; }
+}
