@@ -1221,3 +1221,140 @@ footer { border-top: 1px solid rgba(223,195,139,.15); }
 @media (prefers-reduced-motion: reduce) {
   .gift-render { animation: none !important; }
 }
+
+
+/* Mobile splash layout — fix the legacy 125px flex cap on the hero gift. */
+.santa-lock-screen .welcome-content {
+  flex: 1 1 auto;
+  justify-content: center;
+  margin: 0;
+  padding: clamp(18px, 3vh, 34px) 22px 18px;
+  min-height: 0;
+}
+.santa-lock-screen .welcome-title {
+  font-size: clamp(34px, 8.5vw, 47px);
+  line-height: 1.03;
+  margin: 16px 0 14px;
+}
+.santa-lock-screen .welcome-message {
+  max-width: 430px;
+  font-size: clamp(13px, 3.65vw, 15px);
+  line-height: 1.65;
+  letter-spacing: -.01em;
+}
+.santa-lock-screen .gift-open-trigger {
+  position: relative;
+  display: block;
+  width: min(100%, 420px);
+  height: clamp(235px, 30vh, 305px);
+  min-height: 235px;
+  flex: 0 0 auto;
+  padding: 0;
+  margin: 12px auto 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  isolation: isolate;
+}
+.santa-lock-screen .gift-open-trigger .lock-gift {
+  position: absolute;
+  z-index: 1;
+  right: -2%;
+  top: 50%;
+  display: block;
+  width: clamp(245px, 72vw, 300px);
+  height: clamp(215px, 64vw, 265px);
+  flex: none;
+  margin: 0;
+  transform: translateY(-50%);
+  transform-origin: 50% 55%;
+  filter: drop-shadow(0 18px 17px rgba(0,0,0,.36));
+  animation: splash-gift-float 4.2s ease-in-out infinite;
+}
+.santa-lock-screen .gift-open-trigger .lock-gift-render {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.santa-lock-screen .gift-open-label {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 57%;
+  transform: translateY(-50%);
+  min-width: 112px;
+  padding: 13px 17px;
+  border: 1px solid rgba(223,195,139,.47);
+  border-radius: 999px;
+  color: #f4e4bf;
+  background: linear-gradient(135deg, rgba(17,43,29,.93), rgba(9,28,19,.89));
+  box-shadow: 0 8px 22px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
+  font-size: 15px;
+  letter-spacing: .015em;
+  text-shadow: none;
+}
+.santa-lock-screen .gift-dotted-arrow {
+  position: absolute;
+  z-index: 2;
+  left: 28%;
+  top: 12%;
+  width: clamp(78px, 23vw, 100px);
+  height: 64px;
+  margin: 0;
+  transform: rotate(-3deg);
+  color: #e2c17c;
+  filter: drop-shadow(0 2px 7px rgba(0,0,0,.28));
+}
+.santa-lock-screen .gift-open-trigger:hover .lock-gift {
+  filter: drop-shadow(0 23px 22px rgba(0,0,0,.43));
+  transform: translateY(calc(-50% - 4px)) scale(1.025);
+}
+.santa-lock-screen .gift-open-trigger.is-opening .lock-gift {
+  animation: splash-gift-open .95s cubic-bezier(.2,.75,.25,1) forwards;
+}
+.santa-lock-screen .gift-open-caption {
+  margin: 0;
+  padding: 0 18px calc(env(safe-area-inset-bottom, 0px) + 19px);
+  font-size: 10px;
+  letter-spacing: .18em;
+  color: rgba(240,225,191,.78);
+}
+@keyframes splash-gift-float {
+  0%,100% { transform: translateY(-50%) rotate(-1deg); }
+  50% { transform: translateY(calc(-50% - 7px)) rotate(1deg); }
+}
+@keyframes splash-gift-open {
+  0% { transform: translateY(-50%) scale(1) rotate(0); opacity: 1; filter: drop-shadow(0 18px 17px rgba(0,0,0,.36)); }
+  35% { transform: translateY(-54%) scale(1.08) rotate(-4deg); filter: drop-shadow(0 0 22px rgba(238,205,136,.52)); }
+  70% { transform: translateY(-60%) scale(1.12) rotate(3deg); filter: drop-shadow(0 0 34px rgba(238,205,136,.75)); }
+  100% { transform: translateY(-74%) scale(.76); opacity: 0; filter: drop-shadow(0 0 40px rgba(238,205,136,.2)); }
+}
+.santa-lock-screen .gift-open-trigger.is-opening .gift-dotted-arrow { opacity: 0; transition: opacity .2s; }
+@media (max-width: 430px) {
+  .santa-lock-screen .welcome-content { padding: 12px 20px 10px; }
+  .santa-lock-screen .welcome-title { font-size: clamp(33px, 8.3vw, 39px); margin: 14px 0 12px; }
+  .santa-lock-screen .welcome-message { font-size: 13px; line-height: 1.58; }
+  .santa-lock-screen .gift-open-trigger { height: clamp(225px, 29vh, 270px); margin-top: 6px; }
+  .santa-lock-screen .gift-open-trigger .lock-gift {
+    width: clamp(260px, 75vw, 292px);
+    height: clamp(225px, 67vw, 258px);
+    right: -3%;
+  }
+  .santa-lock-screen .gift-open-label { min-width: 104px; font-size: 14px; padding: 12px 15px; }
+  .santa-lock-screen .gift-dotted-arrow { left: 28%; top: 11%; width: 82px; }
+  .santa-lock-screen .gift-open-caption { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 15px); }
+}
+@media (max-height: 760px) {
+  .santa-lock-screen .welcome-content { padding-top: 6px; padding-bottom: 6px; }
+  .santa-lock-screen .welcome-title { margin-top: 10px; margin-bottom: 10px; }
+  .santa-lock-screen .welcome-message { line-height: 1.5; }
+  .santa-lock-screen .gift-open-trigger { height: 225px; margin-top: 4px; }
+  .santa-lock-screen .gift-open-trigger .lock-gift { width: 250px; height: 220px; }
+  .santa-lock-screen .gift-open-caption { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .santa-lock-screen .gift-open-trigger .lock-gift { animation: none; }
+  .santa-lock-screen .gift-open-trigger.is-opening .lock-gift { animation: gift-opening .3s ease forwards; }
+  .santa-lock-screen .gift-dotted-arrow { animation: none; }
+}
