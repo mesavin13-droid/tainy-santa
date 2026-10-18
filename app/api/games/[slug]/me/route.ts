@@ -26,27 +26,8 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
     ]);
     if (assignmentError || inboxError || outboxError || incomingAssignmentsError) return jsonError('Не удалось загрузить личный кабинет.', 500);
 
-    const [{ data: incomingVideoRows, error: incomingVideoError }, { data: ownVideoRow, error: ownVideoError }] = await Promise.all([
-      db.from('video_greetings').select('id, giver_id, storage_path, created_at').eq('game_id', game.id)
-        .eq('receiver_id', participant.id).not('uploaded_at', 'is', null).order('created_at', { ascending: false }),
-      db.from('video_greetings').select('id, uploaded_at').eq('game_id', game.id).eq('giver_id', participant.id).maybeSingle(),
-    ]);
-    if (incomingVideoError || ownVideoError) return jsonError('Не удалось загрузить видео-поздравления.', 500);
-    const receivedVideoGreetings: Array<{ id: string; url: string; sender_label: string; created_at: string }> = [];
-    for (const greeting of incomingVideoRows ?? []) {
-      const [{ data: signed }, { data: sender }] = await Promise.all([
-        db.storage.from('santa-video-greetings').createSignedUrl(greeting.storage_path, 60 * 60),
-        db.from('participants').select('display_name, revealed_at').eq('game_id', game.id).eq('id', greeting.giver_id).maybeSingle(),
-      ]);
-      if (signed?.signedUrl) receivedVideoGreetings.push({
-        id: greeting.id, url: signed.signedUrl,
-        sender_label: sender?.revealed_at ? sender.display_name : 'Твой Тайный Санта',
-        created_at: greeting.created_at,
-      });
-    }
-
     let recipient: { display_name: string; department: string; wishlist: string } | null = null;
-    if (game.status === 'drawn' && assignment?.receiver_id) {
+    if (['drawn', 'completed'].includes(game.status) && assignment?.receiver_id) {
       const { data } = await db.from('participants').select('display_name, department, wishlist').eq('game_id', game.id).eq('id', assignment.receiver_id).maybeSingle();
       recipient = data;
     }
@@ -74,8 +55,6 @@ export async function POST(request: Request, context: { params: Promise<{ slug: 
       inbox: ((inboxRows ?? []) as Array<{ id: string; body: string; created_at: string }>).map((item: { id: string; body: string; created_at: string }) => ({ id: item.id, body: item.body, created_at: item.created_at })),
       outbox: ((outboxRows ?? []) as Array<{ id: string; body: string; created_at: string }>).map((item: { id: string; body: string; created_at: string }) => ({ id: item.id, body: item.body, created_at: item.created_at, answer: replies.find((reply: { reply_to_id: string; body: string }) => reply.reply_to_id === item.id)?.body ?? null })),
       revealedSenders,
-      receivedVideoGreetings,
-      myVideoGreeting: ownVideoRow ? { id: ownVideoRow.id, uploaded_at: ownVideoRow.uploaded_at } : null,
     });
   } catch (error) {
     console.error('load participant cabinet error', error);
