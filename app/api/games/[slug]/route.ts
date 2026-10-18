@@ -16,7 +16,7 @@ export async function GET(_request: Request, context: { params: Promise<{ slug: 
 
     const [{ count, error: countError }, { data: recentParticipants, error: namesError }] = await Promise.all([
       db.from('participants').select('id', { count: 'exact', head: true }).eq('game_id', game.id),
-      db.from('participants').select('display_name, created_at').eq('game_id', game.id).order('created_at', { ascending: false }).limit(12),
+      db.from('participants').select('id, display_name, created_at').eq('game_id', game.id).order('created_at', { ascending: false }).limit(12),
     ]);
     if (countError || namesError) return jsonError('Не удалось загрузить список участников.', 500);
     return NextResponse.json({ game, participantCount: count ?? 0, recentParticipants: recentParticipants ?? [] });

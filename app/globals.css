@@ -1527,3 +1527,8 @@ footer { border-top: 1px solid rgba(223,195,139,.15); }
 @media (prefers-reduced-motion: reduce) {
   .santa-lock-screen .gift-open-trigger.is-opening .lock-gift { animation: none; opacity: 0; }
 }
+
+/* Organizer actions stay in one roster grid cell on desktop and mobile. */
+.game-person-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.game-person-actions .game-button{padding:7px 10px;font-size:11px}
+@media(max-width:600px){.game-person-actions{align-items:flex-start}}
