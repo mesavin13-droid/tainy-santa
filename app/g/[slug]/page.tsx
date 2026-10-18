@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import QRCode from 'qrcode';
-import { ArrowLeft, ArrowRight, Check, Copy, Gift, LockKeyhole, RefreshCw, Send, ShieldCheck, Sparkles, Users, Video, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Copy, Gift, LockKeyhole, RefreshCw, Send, ShieldCheck, Sparkles, Users, X } from 'lucide-react';
 
 type Game = { id?: string; slug: string; name: string; company_name: string; budget: number; exchange_date: string; registration_deadline: string; rules: string; status: 'registration' | 'drawn' | 'completed' };
 type Person = { id: string; display_name: string; department?: string; wishlist?: string; gift_state?: 'pending' | 'prepared' | 'delivered'; created_at?: string };
 type Restriction = { id?: string; giver_id: string; receiver_id: string };
-type MeData = { game: Game; participant: Person & { revealed_at?: string | null }; recipient: Person | null; inbox: { id: string; body: string; created_at: string }[]; outbox: { id: string; body: string; created_at: string; answer?: string | null }[]; revealedSenders: string[]; receivedVideoGreetings: { id: string; url: string; sender_label: string; created_at: string }[]; myVideoGreeting: { id: string; uploaded_at: string | null } | null };
+type MeData = { game: Game; participant: Person & { revealed_at?: string | null }; recipient: Person | null; inbox: { id: string; body: string; created_at: string }[]; outbox: { id: string; body: string; created_at: string; answer?: string | null }[]; revealedSenders: string[] };
 type Notice = { type: 'error' | 'success'; text: string };
 
 async function readJson(response: Response) {
@@ -22,6 +22,7 @@ export default function GamePage() {
   const slug = params.slug;
   const [game, setGame] = useState<Game | null>(null);
   const [participants, setParticipants] = useState<Person[]>([]);
+  const [participantCount, setParticipantCount] = useState(0);
   const [restrictions, setRestrictions] = useState<Restriction[]>([]);
   const [me, setMe] = useState<MeData | null>(null);
   const [organizerToken, setOrganizerToken] = useState('');
@@ -48,11 +49,13 @@ export default function GamePage() {
     const data = await readJson(await fetch('/api/games/' + encodeURIComponent(slug), { cache: 'no-store' }));
     setGame(data.game);
     setParticipants(data.recentParticipants || []);
+    setParticipantCount(data.participantCount ?? (data.recentParticipants || []).length);
   }, [slug]);
   const refreshAdmin = useCallback(async (token: string) => {
     const data = await readJson(await fetch('/api/games/' + encodeURIComponent(slug) + '/admin', { headers: { 'x-organizer-token': token }, cache: 'no-store' }));
     setGame(data.game);
     setParticipants(data.participants || []);
+    setParticipantCount((data.participants || []).length);
     setRestrictions(data.restrictions || []);
   }, [slug]);
   const refreshMe = useCallback(async (token: string) => {
@@ -96,10 +99,13 @@ export default function GamePage() {
     if (!game || (isOrganizer && !organizerToken)) return;
     const timer = window.setInterval(() => {
       if (organizerToken) void refreshAdmin(organizerToken).catch(() => {});
-      else void refreshPublic().catch(() => {});
+      else {
+        void refreshPublic().catch(() => {});
+        if (participantToken) void refreshMe(participantToken).catch(() => {});
+      }
     }, 12000);
     return () => window.clearInterval(timer);
-  }, [game, organizerToken, isOrganizer, refreshAdmin, refreshPublic]);
+  }, [game, organizerToken, participantToken, isOrganizer, refreshAdmin, refreshPublic, refreshMe]);
 
   useEffect(() => {
     if (!gameUrl) return;
@@ -189,41 +195,11 @@ export default function GamePage() {
     } catch (error) { notifyError(error); }
     finally { setBusy(false); }
   };
-  const uploadVideo = async (file: File) => {
-    const allowed = ['video/mp4', 'video/webm', 'video/quicktime'];
-    if (!allowed.includes(file.type) || file.size < 1 || file.size > 50 * 1024 * 1024) {
-      setNotice({ type: 'error', text: 'Выберите видео MP4, WebM или MOV размером до 50 МБ.' });
-      return;
-    }
-    setBusy(true); setNotice(null);
-    try {
-      const prepared = await readJson(await fetch('/api/games/' + encodeURIComponent(slug) + '/video-greetings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: participantToken, action: 'prepare', content_type: file.type, size: file.size }),
-      }));
-      const uploadResponse = await fetch(prepared.signedUrl, {
-        method: 'PUT',
-        headers: { 'Content-Type': file.type },
-        body: file,
-      });
-      if (!uploadResponse.ok) throw new Error('Не удалось загрузить видео. Попробуйте ещё раз.');
-      await readJson(await fetch('/api/games/' + encodeURIComponent(slug) + '/video-greetings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: participantToken, action: 'complete', greeting_id: prepared.greetingId }),
-      }));
-      await refreshMe(participantToken);
-      setNotice({ type: 'success', text: 'Видео-поздравление отправлено твоему получателю.' });
-    } catch (error) { notifyError(error); }
-    finally { setBusy(false); }
-  };
   const copyInvite = async () => {
     try { await navigator.clipboard.writeText(gameUrl); setCopied(true); window.setTimeout(() => setCopied(false), 1800); }
     catch { setNotice({ type: 'error', text: 'Не удалось скопировать ссылку. Скопируйте адрес из строки браузера.' }); }
   };
   const dateLabel = (value?: string) => value ? new Date(value + 'T12:00:00').toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Не указано';
-  const participantCount = participants.length;
   const existingRestrictionKeys = useMemo(() => new Set(restrictions.map(item => item.giver_id + ':' + item.receiver_id)), [restrictions]);
 
   if (loading) return <div className="game-loading"><div className="game-loader"/><span>Готовим немного волшебства…</span></div>;
@@ -250,8 +226,7 @@ export default function GamePage() {
         <section className="game-page-heading"><div><div className="eyebrow"><LockKeyhole size={13}/> ЛИЧНЫЙ КАБИНЕТ</div><h1>Привет, {me.participant.display_name}!</h1><p className="game-muted">{me.game.name} · бюджет {Number(me.game.budget).toLocaleString('ru-RU')} ₽</p></div><button className="game-button light" onClick={()=>void refreshMe(participantToken)}><RefreshCw size={14}/> Обновить</button></section>
         {me.game.status==='registration' ? <section className="game-panel"><h2>Ты в игре!</h2><p className="game-muted">Жеребьёвка ещё не проведена. Пока можно добавить пожелания, чтобы Тайному Санте было проще выбрать подарок.</p><form className="game-form" onSubmit={e=>{e.preventDefault();void saveMe({wishlist})}}><label>Мои пожелания<textarea rows={4} maxLength={1000} value={wishlist || me.participant.wishlist || ''} onChange={e=>setWishlist(e.target.value)} placeholder="Что тебе нравится? Что точно не хочется получить?"/></label><button className="game-button gold" disabled={busy}>Сохранить пожелания</button></form></section> : <section className="game-recipient-card"><div className="game-recipient-side"><div className="eyebrow"><Gift size={13}/> ТВОЙ ПОЛУЧАТЕЛЬ</div>{me.recipient ? <><div className="game-recipient-person" style={{marginTop:20}}><div className="game-icon-circle">{initials(me.recipient.display_name)}</div><div><h2>{me.recipient.display_name}</h2><span>{me.recipient.department || 'Отдел не указан'}</span></div></div><div className="game-wishlist"><span>ПОЖЕЛАНИЯ</span><p>{me.recipient.wishlist || 'Получатель пока не добавил пожелания.'}</p></div><div className="game-gift-status"><span>Мой подарок</span><div className="game-status-buttons">{([{value:'pending',label:'В планах'},{value:'prepared',label:'Готов'},{value:'delivered',label:'Вручён'}] as const).map(item=><button key={item.value} className={me.participant.gift_state===item.value?'active':''} onClick={()=>void saveMe({gift_state:item.value})} disabled={busy}>{item.label}</button>)}</div></div></> : <p>Назначение не найдено. Обновите страницу или обратитесь к организатору.</p>}</div><div className="game-recipient-note"><div className="game-icon-circle"><LockKeyhole size={20}/></div><h3>Твоя тайна</h3><strong>{me.participant.revealed_at ? 'Ты раскрылся' : <LockKeyhole size={18} aria-label="Личность скрыта" />}</strong><span>{me.participant.revealed_at?'Твоё имя теперь раскрыто получателю.':'Никто не узнает, что подарок от тебя, пока ты сам не решишь раскрыться.'}</span>{!me.participant.revealed_at&&<button className="game-button gold" style={{marginTop:20}} onClick={()=>{if(window.confirm('Раскрыть получателю, что подарок от тебя?'))void saveMe({reveal:true})}} disabled={busy}>Раскрыть себя</button>}</div></section>}
         {me.game.status!=='registration' && <section className="game-panel"><h2>Анонимный вопрос</h2><p className="game-muted">Спроси своего получателя о размере, цвете или пожеланиях. Имя отправителя останется скрытым.</p><form className="game-message-form" onSubmit={sendMessage}><textarea rows={3} value={message} onChange={e=>setMessage(e.target.value)} maxLength={1000} placeholder="Например: тебе больше нравится чай или кофе?"/><button className="game-button gold" disabled={busy||!message.trim()}><Send size={14}/> Отправить анонимно</button></form><div className="game-message-group"><h3>Ответы и вопросы</h3>{me.inbox.length===0&&me.outbox.length===0?<div className="game-empty-inline">Пока сообщений нет.</div>:<>{me.inbox.map(item=><article className="game-message-card" key={item.id}><span className="game-message-label">Вопрос от Тайного Санты</span><p>{item.body}</p><form className="game-reply-form" onSubmit={e=>{e.preventDefault();void sendReply(item.id)}}><input value={replyDrafts[item.id]||''} onChange={e=>setReplyDrafts(prev=>({...prev,[item.id]:e.target.value}))} placeholder="Ответить анонимно" maxLength={1000}/><button type="submit" disabled={busy||!(replyDrafts[item.id]||'').trim()} aria-label="Отправить ответ"><Send size={14}/></button></form></article>)}{me.outbox.map(item=><article className="game-message-card" key={item.id}><span className="game-message-label">Твой анонимный вопрос</span><p>{item.body}</p>{item.answer?<div className="game-message-answer">Ответ: {item.answer}</div>:<span className="game-message-label">Ответ пока не получен</span>}</article>)}</>}</div></section>}
-        {me.game.status!=='registration' && <section className="game-panel video-greeting-panel"><h2>Видео-поздравление</h2><p className="game-muted">Запиши короткое поздравление для своего получателя. Видео доступно только ему, формат MP4, WebM или MOV, до 50 МБ.</p>{me.myVideoGreeting?.uploaded_at ? <div className="video-sent-state"><Check size={20}/><div><strong>Поздравление отправлено</strong><span>Получатель сможет посмотреть его в личном кабинете.</span></div></div> : <label className="video-upload-control"><Video size={21}/><span>{busy?'Загрузка…':'Выбрать видео для отправки'}</span><small>MP4 / WebM / MOV · до 50 МБ</small><input type="file" accept="video/mp4,video/webm,video/quicktime" disabled={busy} onChange={event=>{const file=event.currentTarget.files?.[0];if(file)void uploadVideo(file);event.currentTarget.value='';}}/></label>}{me.receivedVideoGreetings?.length ? <><h3 style={{fontSize:14,margin:'22px 0 12px'}}>Видео для тебя</h3><div className="received-video-list">{me.receivedVideoGreetings.map(video=><article className="received-video-card" key={video.id}><div className="received-video-head"><div className="joined-avatar"><Video size={17}/></div><div><strong>{video.sender_label}</strong><span>{dateLabel(video.created_at.slice(0,10))}</span></div></div><video controls playsInline preload="metadata" src={video.url}/></article>)}</div></> : <p className="game-muted" style={{marginTop:12}}>Когда тебе отправят видео, оно появится здесь.</p>}</section>}
-        <section className="game-panel"><h2>Твоя личная ссылка</h2><p className="game-muted">Сохрани ссылку, чтобы снова открыть личный кабинет на другом устройстве.</p><button className="game-button light" onClick={async()=>{try{await navigator.clipboard.writeText(window.location.href);setNotice({type:'success',text:'Личная ссылка скопирована.'})}catch{setNotice({type:'error',text:'Не удалось скопировать ссылку.'})}}}><Copy size={14}/> Скопировать личную ссылку</button></section>
+        <section className="game-panel"><h2>Твоя личная ссылка</h2><p className="game-muted">Сохрани ссылку, чтобы снова открыть личный кабинет на другом устройстве.</p><button className="game-button light" onClick={async()=>{try{await navigator.clipboard.writeText(window.location.origin+'/g/'+encodeURIComponent(slug)+'#p='+participantToken);setNotice({type:'success',text:'Личная ссылка скопирована.'})}catch{setNotice({type:'error',text:'Не удалось скопировать ссылку.'})}}}><Copy size={14}/> Скопировать личную ссылку</button></section>
       </>}
       <footer className="game-footer"><span>ТАЙНЫЙ САНТА</span><span>Сохраняйте интригу до нужного момента.</span><a href="/">На главную</a></footer>
     </main>
