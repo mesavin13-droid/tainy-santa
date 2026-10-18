@@ -139,6 +139,44 @@ export default function GamePage() {
     } catch (error) { notifyError(error); }
     finally { setBusy(false); }
   };
+  const saveSettings = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!organizerToken) return;
+    const form = new FormData(event.currentTarget);
+    const payload = {
+      name: String(form.get('name') || ''),
+      company_name: String(form.get('company_name') || ''),
+      budget: Number(form.get('budget')),
+      exchange_date: String(form.get('exchange_date') || ''),
+      registration_deadline: String(form.get('registration_deadline') || ''),
+      rules: String(form.get('rules') || ''),
+    };
+    setBusy(true); setNotice(null);
+    try {
+      await readJson(await fetch('/api/games/' + encodeURIComponent(slug) + '/admin', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-organizer-token': organizerToken },
+        body: JSON.stringify(payload),
+      }));
+      await refreshAdmin(organizerToken);
+      setNotice({ type: 'success', text: 'Настройки игры обновлены.' });
+    } catch (error) { notifyError(error); }
+    finally { setBusy(false); }
+  };
+  const removeParticipant = async (id: string, name: string) => {
+    if (!organizerToken || !window.confirm('Удалить участника «' + name + '»? Его личная ссылка перестанет работать.')) return;
+    setBusy(true); setNotice(null);
+    try {
+      await readJson(await fetch('/api/games/' + encodeURIComponent(slug) + '/admin', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', 'x-organizer-token': organizerToken },
+        body: JSON.stringify({ participant_id: id }),
+      }));
+      await refreshAdmin(organizerToken);
+      setNotice({ type: 'success', text: 'Участник удалён до жеребьёвки.' });
+    } catch (error) { notifyError(error); }
+    finally { setBusy(false); }
+  };
   const draw = async () => {
     if (!organizerToken || !window.confirm('Провести жеребьёвку? После этого состав участников и ограничения нельзя будет изменить.')) return;
     setBusy(true); setNotice(null);
@@ -217,8 +255,23 @@ export default function GamePage() {
       {isOrganizer && <>
         <section className="game-page-heading"><div><div className="eyebrow"><ShieldCheck size={13}/> ПАНЕЛЬ ОРГАНИЗАТОРА</div><h1>{game.name}</h1><p className="game-muted">{game.company_name} · {dateLabel(game.exchange_date)}</p></div><div className="game-heading-actions"><button className="game-button light" onClick={()=>void refreshAdmin(organizerToken)}><RefreshCw size={14}/> Обновить</button><button className="game-button" onClick={()=>void copyInvite()}><Copy size={14}/>{copied?'Скопировано':'Ссылка-приглашение'}</button></div></section>
         <div className="game-stats-row"><div><Users size={20}/><span>Участники</span><strong>{participants.length}</strong></div><div><Gift size={20}/><span>Бюджет</span><strong>{Number(game.budget).toLocaleString('ru-RU')} ₽</strong></div><div><LockKeyhole size={20}/><span>Статус</span><strong style={{fontSize:14}}>{game.status==='registration'?'Регистрация':'Жеребьёвка готова'}</strong></div></div>
+        {game.status==='registration' && <section className="game-panel">
+          <h2>Настройки игры</h2>
+          <p className="game-muted">До жеребьёвки можно изменить название, бюджет и даты. После распределения настройки фиксируются.</p>
+          <form className="game-form" key={[game.slug, game.name, game.budget, game.exchange_date, game.registration_deadline].join(':')} onSubmit={saveSettings}>
+            <div className="game-form-grid">
+              <label>Название игры<input name="name" maxLength={100} required defaultValue={game.name}/></label>
+              <label>Компания<input name="company_name" maxLength={100} required defaultValue={game.company_name}/></label>
+              <label>Бюджет, ₽<input name="budget" type="number" min={1} max={10000000} required defaultValue={game.budget}/></label>
+              <label>День обмена<input name="exchange_date" type="date" required defaultValue={game.exchange_date || ''}/></label>
+              <label>Регистрация до<input name="registration_deadline" type="date" required defaultValue={game.registration_deadline || ''}/></label>
+            </div>
+            <label>Правила<textarea name="rules" maxLength={1500} rows={3} defaultValue={game.rules}/></label>
+            <button className="game-button gold" disabled={busy} type="submit">Сохранить настройки</button>
+          </form>
+        </section>}
         <section className="game-panel"><div className="game-panel-heading"><div><h2>Приглашение команды</h2><p className="game-muted">Отправьте ссылку в рабочий чат. Новые участники появятся здесь автоматически каждые 12 секунд.</p></div><button className="game-button light" onClick={()=>void copyInvite()}><Copy size={14}/> Копировать</button><a className="game-button gold" href={"/g/"+slug+"/banner"} target="_blank" rel="noreferrer">Баннер A4 для печати</a></div><div className="game-share-layout"><p className="game-muted" style={{overflowWrap:'anywhere'}}>{gameUrl}</p><div className="game-qr">{qrCode ? <img src={qrCode} alt="QR-код приглашения" width={112} height={112}/> : <div className="game-qr-placeholder" role="status">Готовим QR-код…</div>}<span>QR-код игры</span></div></div></section>
-        <section className="game-panel"><div className="game-panel-heading"><div><h2>Участники</h2><p className="game-muted">Скрытые назначения не отображаются в панели.</p></div><span className="game-muted">{participants.length} чел.</span></div>{participants.length ? participants.map((person,index)=><div className="game-person-row" key={person.id}><div className="game-person-avatar">{initials(person.display_name)}</div><div><div className="game-person-name">{person.display_name}</div><div className="game-person-sub">{person.department || 'Отдел не указан'}</div></div><div className="game-person-wish">{person.wishlist || 'Пожеланий пока нет'}</div><div className="game-person-sub">{person.gift_state==='delivered'?'Вручён':person.gift_state==='prepared'?'Подготовлен':'—'}</div></div>) : <div className="game-empty-inline">Пока никто не присоединился. Поделитесь ссылкой с командой.</div>}</section>
+        <section className="game-panel"><div className="game-panel-heading"><div><h2>Участники</h2><p className="game-muted">Скрытые назначения не отображаются в панели.</p></div><span className="game-muted">{participants.length} чел.</span></div>{participants.length ? participants.map((person,index)=><div className="game-person-row" key={person.id}><div className="game-person-avatar">{initials(person.display_name)}</div><div><div className="game-person-name">{person.display_name}</div><div className="game-person-sub">{person.department || 'Отдел не указан'}</div></div><div className="game-person-wish">{person.wishlist || 'Пожеланий пока нет'}</div><div className="game-person-sub">{person.gift_state==='delivered'?'Вручён':person.gift_state==='prepared'?'Подготовлен':'—'}</div>{game.status==='registration' && <button type="button" className="game-button light" disabled={busy} onClick={()=>void removeParticipant(person.id,person.display_name)} aria-label={'Удалить участника '+person.display_name}>Удалить</button>}</div>) : <div className="game-empty-inline">Пока никто не присоединился. Поделитесь ссылкой с командой.</div>}</section>
         {game.status==='registration' && <section className="game-panel"><h2>Ограничения жеребьёвки</h2><p className="game-muted">Например, супруги или руководитель и сотрудник не должны выпадать друг другу. Добавляйте только направленные ограничения.</p><form className="game-restriction-form" onSubmit={e=>{e.preventDefault();void saveRestriction('add')}}><label>Кто не дарит<select value={giverId} onChange={e=>setGiverId(e.target.value)} required><option value="">Выберите участника</option>{participants.map(p=><option key={p.id} value={p.id}>{p.display_name}</option>)}</select></label><label>Кому не дарит<select value={receiverId} onChange={e=>setReceiverId(e.target.value)} required><option value="">Выберите участника</option>{participants.filter(p=>p.id!==giverId).map(p=><option key={p.id} value={p.id}>{p.display_name}</option>)}</select></label><button className="game-button light" disabled={busy||!giverId||!receiverId}>Добавить</button></form>{restrictions.length>0&&<div className="game-restrictions-list">{restrictions.map((r,index)=><div className="game-restriction-item" key={r.id||r.giver_id+':'+r.receiver_id}><span>{participants.find(p=>p.id===r.giver_id)?.display_name||'Участник'} → {participants.find(p=>p.id===r.receiver_id)?.display_name||'Участник'}</span><button className="game-button light" onClick={()=>void saveRestriction('remove',r)} disabled={busy}>Удалить</button></div>)}</div>}</section>}
         <section className="game-draw-callout"><div><h3>{game.status==='registration'?'Время устроить сюрприз?':'Жеребьёвка проведена'}</h3><p>{game.status==='registration'?'Перед запуском проверьте список и ограничения. Если полного корректного распределения нет, назначения не будут сохранены.':'Участники видят только своего получателя. Повторно запустить жеребьёвку нельзя.'}</p></div>{game.status==='registration'&&<button className="game-button gold" disabled={busy||participants.length<2} onClick={()=>void draw()}><Sparkles size={15}/> Провести жеребьёвку</button>}</section>
       </>}
